@@ -2,6 +2,7 @@
 #include "GlWidget.hpp"
 #include "Renderer.hpp"
 #include "windows/MainWindow.hpp"
+#include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 
 
@@ -42,4 +43,25 @@ void GlWidget::resizeGL(int w, int h)
 void GlWidget::loadFile(QString path)
 {
   model_.import(path.toStdString());
+}
+
+void GlWidget::mousePressEvent(QMouseEvent* event)
+{
+  if (event->buttons() == Qt::MouseButton::LeftButton)
+    camera_.mousePressEvent(vec2i(event->x(), event->y()));
+}
+
+void GlWidget::mouseMoveEvent(QMouseEvent* event)
+{
+  if (event->buttons() == Qt::MouseButton::LeftButton)
+  {
+    camera_.mouseMoveEvent(vec2i(event->x(), event->y()));
+    repaint();
+  }
+}
+
+void GlWidget::wheelEvent(QWheelEvent* event)
+{
+  camera_.mouseWheelEvent(event->delta());
+  repaint();
 }

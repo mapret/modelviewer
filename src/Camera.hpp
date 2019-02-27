@@ -7,7 +7,7 @@
 class Camera
 {
   public:
-    Camera(const vec3& position = vec3(-2, 0, 0), const vec3& direction = vec3(1, 0, 0), const vec3& up = vec3(0, 1, 0), float fov = 90.f, float aspect_ratio = 16/9.f);
+    Camera(const vec3& center = vec3(), float radius = 2, float latitude = 0, float longitude = 0, float fov = 90.f, float aspect_ratio = 16/9.f);
 
     void setVerticalFieldOfView(float fov);
     void setAspectRatio(float aspect_ratio);
@@ -15,10 +15,22 @@ class Camera
     mat4 getViewMatrix() const;
     mat4 getProjectionMatrix() const;
 
+    void mousePressEvent(const vec2i& mouse_position);
+    void mouseMoveEvent(const vec2i& mouse_position);
+    void mouseWheelEvent(int delta);
+
   private:
-    vec3 position_;
-    vec3 direction_;
-    vec3 up_;
+    void recalculate() const;
+
+    vec3 center_;
+    float radius_;
+    float latitude_;
+    float longitude_;
     float fov_;
     float aspect_ratio_;
+
+    mutable bool dirty_bit_ = true;
+    mutable vec3 camera_position_;
+    mutable vec3 camera_up_;
+    vec2i previous_mouse_position_;
 };

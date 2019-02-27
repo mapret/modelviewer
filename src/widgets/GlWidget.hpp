@@ -22,6 +22,10 @@ class GlWidget : public QGLWidget
     void paintGL() override;
     void resizeGL(int w, int h) override;
 
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void wheelEvent(QWheelEvent* event) override;
+
   private:
     MainWindow* main_window_;
     std::unique_ptr<Renderer> renderer_;
