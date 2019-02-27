@@ -27,7 +27,7 @@ bool ModelImporter::importImpl(const std::filesystem::path& path, Model& model)
   directory_ = path.parent_path();
 
   Assimp::Importer importer;
-  scene_.reset(importer.ReadFile(path.string(), aiProcess_FlipUVs | aiProcessPreset_TargetRealtime_MaxQuality));
+  scene_ = importer.ReadFile(path.string(), aiProcess_FlipUVs | aiProcessPreset_TargetRealtime_MaxQuality);
   if (!scene_ || scene_->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene_->mRootNode)
     return false;
 

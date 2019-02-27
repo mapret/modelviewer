@@ -19,6 +19,9 @@ class Mesh
     ~Mesh();
 
     void setMaterial(Material&& material);
+    const Material& getMaterial() const;
+    const GL::VertexArray& getVertexArray() const;
+    size_t getNumberOfIndices() const;
 
   private:
     std::vector<GeometryVertex> vertices_;

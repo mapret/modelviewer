@@ -41,6 +41,13 @@ namespace GL
     other.name_ = 0;
   }
 
+  Program& Program::operator=(Program&& other) noexcept
+  {
+    name_ = other.name_;
+    other.name_ = 0;
+    return *this;
+  }
+
   void Program::use() const
   {
     glUseProgram(name_);

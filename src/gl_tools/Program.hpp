@@ -19,6 +19,7 @@ namespace GL
       Program() = default;
       Program(const char* name, const char* vertex_src, const char* fragment_src);
       Program(Program&& other) noexcept;
+      Program& operator=(Program&& other) noexcept;
       ~Program();
 
       void use() const;

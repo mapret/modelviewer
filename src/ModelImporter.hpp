@@ -22,7 +22,7 @@ class ModelImporter
     Material loadMaterial(aiMaterial* material);
 
     Model* model_;
-    std::unique_ptr<const aiScene> scene_;
+    const aiScene* scene_;
     std::filesystem::path directory_;
     bool valid = true;
 };

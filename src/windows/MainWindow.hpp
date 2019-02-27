@@ -10,10 +10,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
-public:
+  public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-private:
+  private:
     std::unique_ptr<Ui::MainWindow> ui_;
 };

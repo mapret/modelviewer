@@ -46,3 +46,18 @@ void Mesh::setMaterial(Material&& material)
 {
   material_ = std::move(material);
 }
+
+const Material& Mesh::getMaterial() const
+{
+  return material_;
+}
+
+const GL::VertexArray& Mesh::getVertexArray() const
+{
+  return vao_;
+}
+
+size_t Mesh::getNumberOfIndices() const
+{
+  return indices_.size();
+}
