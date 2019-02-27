@@ -6,8 +6,20 @@
 #include <QtWidgets/QApplication>
 
 
+namespace
+{
+  QGLFormat getOpenglFormat()
+  {
+    QGLFormat format;
+    format.setVersion(4, 2);
+    format.setProfile(QGLFormat::CoreProfile);
+    return format;
+  }
+}
+
 GlWidget::GlWidget(MainWindow* main_window)
-  : main_window_(main_window)
+  : QGLWidget(getOpenglFormat()),
+    main_window_(main_window)
 {
 }
 

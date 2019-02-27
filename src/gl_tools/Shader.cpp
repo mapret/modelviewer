@@ -23,7 +23,7 @@ namespace GL
         break;
     }
 
-    const char* sources[2] = {"#version 430 core\n", nullptr};
+    const char* sources[2] = {"#version 420 core\n", nullptr};
     sources[1] = src;
     glShaderSource(name_, 2, sources, NULL);
     glCompileShader(name_);
