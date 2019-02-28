@@ -139,7 +139,7 @@ Material ModelImporter::loadMaterial(aiMaterial* mat)
       std::filesystem::path path_to_file = directory_ / str.C_Str();
 
       int width, height, nrComponents;
-      unsigned char* img_data = stbi_load(path_to_file.c_str(), &width, &height, &nrComponents, 0);
+      unsigned char* img_data = stbi_load(path_to_file.string().c_str(), &width, &height, &nrComponents, 0);
       if (!img_data)
         throw std::runtime_error("Failed to load " + path_to_file.string());
 
