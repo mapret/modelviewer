@@ -8,6 +8,8 @@ add_definitions(-DGLEW_STATIC)
 add_subdirectory(external/glew)
 include_directories(external/glew/include)
 
+include_directories(external/stb/include)
+
 ExternalProject_Add(assimp
     DOWNLOAD_DIR ${CMAKE_CURRENT_LIST_DIR}/external/download
     DOWNLOAD_NAME assimp-4.1.0.zip
