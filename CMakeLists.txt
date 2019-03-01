@@ -14,7 +14,8 @@ ExternalProject_Add(assimp
     URL https://github.com/assimp/assimp/archive/v4.1.0.zip
     URL_HASH SHA256=407BE74F44F488FCF1AAC3492D962452DDDE89561906E917A208C75E1192BCDC
     CMAKE_ARGS -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DCMAKE_BUILD_TYPE=Release -DASSIMP_LIB_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp -DASSIMP_BIN_INSTALL_DIR=${CMAKE_BINARY_DIR} -DASSIMP_INCLUDE_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp/include
-    BUILD_COMMAND ${CMAKE_COMMAND} --build . --target assimp
+    BUILD_COMMAND $(MAKE) assimp # Not sure if this works with MSVC
+    #BUILD_COMMAND ${CMAKE_COMMAND} --build . --target assimp
 )
 include_directories(external/assimp/include)
 find_library(libassimp assimp HINTS ${CMAKE_CURRENT_LIST_DIR}/external/assimp)
@@ -53,6 +54,9 @@ add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 include_directories(SYSTEM ${LIBRARY_DIR})
+if (UNIX)
+    include_directories(/usr/include/qt) #TODO: Find a better way to do this
+endif()
 
 if (libassimp)
     set(LIBS ${libassimp})
@@ -65,6 +69,6 @@ endif()
 if (WIN32)
     list(APPEND LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::OpenGL glew)
 else()
-    list(APPEND LIBS Qt5Core Qt5Gui Qt5Widgets Qt5Xml Qt5OpenGL GL GLEW stdc++fs)
+    list(APPEND LIBS Qt5Core Qt5Gui Qt5Widgets Qt5OpenGL GL GLEW stdc++fs)
 endif()
 target_link_libraries(${PROJECT_NAME} ${LIBS})
