@@ -1,3 +1,4 @@
+#include "math.hpp"
 #include <cmath>
 #include <functional>
 #include <limits>

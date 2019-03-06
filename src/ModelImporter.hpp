@@ -4,6 +4,7 @@
 
 
 class Model;
+struct aiAnimation;
 struct aiMaterial;
 struct aiMesh;
 struct aiNode;
@@ -20,6 +21,7 @@ class ModelImporter
     void processNode(aiNode* node, size_t& index);
     void processMesh(aiMesh* ai_mesh, size_t bone_index);
     Material loadMaterial(aiMaterial* material);
+    void processAnimation(aiAnimation* ai_animation);
 
     Model* model_;
     const aiScene* scene_;

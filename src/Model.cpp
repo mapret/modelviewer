@@ -19,6 +19,12 @@ void Model::addMesh(Mesh&& mesh)
   meshes_.push_back(std::move(mesh));
 }
 
+void Model::addAnimation(Animation&& animation)
+{
+  animation_names_[animation.name] = animations_.size();
+  animations_.push_back(std::move(animation));
+}
+
 size_t Model::getBoneCount() const
 {
   return bones_.size();
@@ -45,4 +51,26 @@ Bone& Model::getBone(size_t index)
 const std::vector<Mesh>& Model::getMeshes() const
 {
   return meshes_;
+}
+
+std::vector<std::string> Model::getAnimationNames() const
+{
+  std::vector<std::string> names;
+  names.reserve(animation_names_.size());
+  for (const auto& animation : animation_names_)
+    names.push_back(animation.first);
+  return names;
+}
+
+size_t Model::getAnimationIndex(const std::string& name) const
+{
+  auto it = animation_names_.find(name);
+  if (it == animation_names_.end())
+    return npos;
+  return it->second;
+}
+
+const Animation& Model::getAnimation(size_t index) const
+{
+  return animations_[index];
 }

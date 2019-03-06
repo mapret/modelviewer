@@ -5,12 +5,14 @@
 
 class Camera;
 class Model;
+class BoneTransform;
 
 class Renderer
 {
   public:
     Renderer();
-    void draw(const Model& model, const Camera& camera);
+    void update(const Model& model, BoneTransform& transform, float dt);
+    void draw(const Model& model, const BoneTransform& transform, const Camera& camera);
 
   private:
     GL::Program shader_;

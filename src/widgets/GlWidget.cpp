@@ -19,12 +19,20 @@ namespace
 
 GlWidget::GlWidget(MainWindow* main_window)
   : QGLWidget(getOpenglFormat()),
-    main_window_(main_window)
+    main_window_(main_window),
+    update_timer_(main_window)
 {
+  update_timer_.setInterval(1000 / 60);
+  QObject::connect(&update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
 }
 
 GlWidget::~GlWidget()
 {
+}
+
+const Model& GlWidget::getModel() const
+{
+  return model_;
 }
 
 void GlWidget::initializeGL()
@@ -39,10 +47,18 @@ void GlWidget::initializeGL()
     emit loadFile(arguments[1]);
 }
 
+void GlWidget::onUpdate()
+{
+  std::chrono::duration<float> ts = Clock::now() - last_update_time_;
+  last_update_time_ = Clock::now();
+  renderer_->update(model_, transform_, ts.count());
+  repaint();
+}
+
 void GlWidget::paintGL()
 {
   QGLWidget::paintGL();
-  renderer_->draw(model_, camera_);
+  renderer_->draw(model_, transform_, camera_);
 }
 
 void GlWidget::resizeGL(int w, int h)
@@ -55,6 +71,41 @@ void GlWidget::resizeGL(int w, int h)
 void GlWidget::loadFile(QString path)
 {
   model_.import(path.toStdString());
+  transform_.setNumberOfBones(model_.getBoneCount());
+  last_update_time_ = Clock::now();
+  emit fileLoaded();
+}
+
+void GlWidget::playAnimation(QString name)
+{
+  std::string animation_name = name.toStdString();
+  size_t index = model_.getAnimationIndex(animation_name);
+  transform_.setCurrentAnimationIndex(index);
+  renderer_->update(model_, transform_, 0);
+  startAnimation();
+}
+
+void GlWidget::startAnimation()
+{
+  transform_.setRunning(true);
+  last_update_time_ = Clock::now();
+  update_timer_.start();
+}
+
+void GlWidget::toggleAnimation()
+{
+  transform_.setRunning(!transform_.getRunning());
+  if (!transform_.getRunning())
+    update_timer_.stop();
+  else
+    startAnimation();
+}
+
+void GlWidget::resetAnimation()
+{
+  transform_.resetAnimation();
+  renderer_->update(model_, transform_, 0);
+  repaint();
 }
 
 void GlWidget::mousePressEvent(QMouseEvent* event)

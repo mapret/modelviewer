@@ -34,6 +34,9 @@ bool ModelImporter::importImpl(const std::filesystem::path& path, Model& model)
   size_t index = 0;
   processNode(scene_->mRootNode, index);
 
+  for (unsigned i = 0; i < scene_->mNumAnimations; i++)
+    processAnimation(scene_->mAnimations[i]);
+
   return true;
 }
 
@@ -133,10 +136,11 @@ Material ModelImporter::loadMaterial(aiMaterial* mat)
   {
     for (unsigned int i = 0; i < mat->GetTextureCount(texture_type); i++)
     {
-      aiString str;
-      mat->GetTexture(texture_type, i, &str);
+      aiString relative_texture_path;
+      mat->GetTexture(texture_type, i, &relative_texture_path);
       bool skip = false;
-      std::filesystem::path path_to_file = directory_ / str.C_Str();
+      std::replace(relative_texture_path.data, relative_texture_path.data + relative_texture_path.length, '\\', '/');
+      std::filesystem::path path_to_file = directory_ / relative_texture_path.C_Str();
 
       int width, height, nrComponents;
       unsigned char* img_data = stbi_load(path_to_file.string().c_str(), &width, &height, &nrComponents, 0);
@@ -174,4 +178,40 @@ Material ModelImporter::loadMaterial(aiMaterial* mat)
     material.color_specular = vec3(c.r, c.g, c.b);
 
   return material;
+}
+
+void ModelImporter::processAnimation(aiAnimation* ai_animation)
+{
+  float scale = 1.f / static_cast<float>(ai_animation->mTicksPerSecond);
+  Animation animation;
+  animation.name = ai_animation->mName.C_Str();
+  animation.duration = static_cast<float>(ai_animation->mDuration - 1) * scale; // -1 for smooth looping
+
+  // A channel contains all animation information about a single bone
+  for (unsigned i = 0; i < ai_animation->mNumChannels; i++)
+  {
+    auto* channel = ai_animation->mChannels[i];
+    size_t bone_index = model_->getBoneIndex(channel->mNodeName.C_Str());
+    assert(bone_index != static_cast<size_t>(-1));
+    Animation::Keyframes keyframes;
+    for (unsigned j = 0; j < channel->mNumPositionKeys; j++)
+    {
+      const auto& key = channel->mPositionKeys[j];
+      keyframes.position_keyframes[static_cast<float>(key.mTime - 1) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
+      // -1 because animations always seem to start with timestamp 1
+    }
+    for (unsigned j = 0; j < channel->mNumScalingKeys; j++)
+    {
+      const auto& key = channel->mScalingKeys[j];
+      keyframes.scale_keyframes[static_cast<float>(key.mTime - 1) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
+    }
+    for (unsigned j = 0; j < channel->mNumRotationKeys; j++)
+    {
+      const auto& key = channel->mRotationKeys[j];
+      keyframes.rotation_keyframes[static_cast<float>(key.mTime - 1) * scale] = quat(key.mValue.x, key.mValue.y, key.mValue.z, key.mValue.w);
+    }
+    animation.keyframes[bone_index] = keyframes;
+  }
+
+  model_->addAnimation(std::move(animation));
 }

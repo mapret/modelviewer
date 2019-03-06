@@ -4,6 +4,8 @@
 #include <QtWidgets/QMainWindow>
 
 
+class GlWidget;
+class QListWidgetItem;
 namespace Ui { class MainWindow; }
 
 class MainWindow : public QMainWindow
@@ -16,4 +18,11 @@ class MainWindow : public QMainWindow
 
   private:
     std::unique_ptr<Ui::MainWindow> ui_;
+    GlWidget* gl_widget_;
+
+  private slots:
+    void fileLoaded();
+    void startAnimation(QListWidgetItem* item);
+    void toggleAnimation();
+    void resetAnimation();
 };
