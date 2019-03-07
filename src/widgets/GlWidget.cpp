@@ -1,5 +1,6 @@
 #include "gl_tools/GL.hpp" //Must be included before other OpenGL includes
 #include "GlWidget.hpp"
+#include "MouseEvent.hpp"
 #include "Renderer.hpp"
 #include "windows/MainWindow.hpp"
 #include <QtGui/QMouseEvent>
@@ -110,17 +111,13 @@ void GlWidget::resetAnimation()
 
 void GlWidget::mousePressEvent(QMouseEvent* event)
 {
-  if (event->buttons() == Qt::MouseButton::LeftButton)
-    camera_.mousePressEvent(vec2i(event->x(), event->y()));
+  camera_.mousePressEvent(MouseEvent(event));
 }
 
 void GlWidget::mouseMoveEvent(QMouseEvent* event)
 {
-  if (event->buttons() == Qt::MouseButton::LeftButton)
-  {
-    camera_.mouseMoveEvent(vec2i(event->x(), event->y()));
-    repaint();
-  }
+  camera_.mouseMoveEvent(MouseEvent(event));
+  repaint();
 }
 
 void GlWidget::wheelEvent(QWheelEvent* event)

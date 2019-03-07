@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "MouseEvent.hpp"
 
 
 Camera::Camera(const vec3& center, float radius, float latitude, float longitude, float fov, float aspect_ratio)
@@ -33,19 +34,28 @@ mat4 Camera::getProjectionMatrix() const
   return mat4::perspective(fov_, aspect_ratio_, 0.1f, 1000.f);
 }
 
-void Camera::mousePressEvent(const vec2i& mouse_position)
+void Camera::mousePressEvent(const MouseEvent& event)
 {
-  previous_mouse_position_ = mouse_position;
+  previous_mouse_position_ = event.position;
 }
 
-void Camera::mouseMoveEvent(const vec2i& mouse_position)
+void Camera::mouseMoveEvent(const MouseEvent& event)
 {
-  constexpr static float LAT_MAX = static_cast<float>(M_PI_2) - 0.1f;
-  vec2i dp = mouse_position - previous_mouse_position_;
-  latitude_ = std::clamp(latitude_ + dp.y / 100.f, -LAT_MAX, LAT_MAX);
-  longitude_ += dp.x / 100.f;
+  vec2i dp = event.position - previous_mouse_position_;
+  if (event.buttons & MouseEvent::Buttons::Left)
+  {
+    constexpr float LAT_MAX = static_cast<float>(M_PI_2) - 0.1f;
+    latitude_ = std::clamp(latitude_ + dp.y / 100.f, -LAT_MAX, LAT_MAX);
+    longitude_ += dp.x / 100.f;
+  }
+  else if (event.buttons & MouseEvent::Buttons::Middle)
+  {
+    constexpr float PAN_SCALE = 0.5f;
+    vec3 side = vec3::cross((center_ - camera_position_).normalized(), camera_up_);
+    center_ -= side * dp.x * PAN_SCALE - camera_up_ * dp.y * PAN_SCALE;
+  }
 
-  previous_mouse_position_ = mouse_position;
+  previous_mouse_position_ = event.position;
   dirty_bit_ = true;
 }
 
@@ -71,5 +81,7 @@ void Camera::recalculate() const
       vec3(std::cos(latitude_) * std::cos(longitude_),
            std::sin(latitude_),
            std::cos(latitude_) * std::sin(longitude_));
-  camera_up_ = vec3(0, 1, 0);
+  camera_up_ = vec3(std::cos(latitude_ + static_cast<float>(M_PI_2)) * std::cos(longitude_),
+                    std::sin(latitude_ + static_cast<float>(M_PI_2)),
+                    std::cos(latitude_ + static_cast<float>(M_PI_2)) * std::sin(longitude_));
 }

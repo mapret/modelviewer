@@ -4,6 +4,8 @@
 #include "math/vec3.hpp"
 
 
+class MouseEvent;
+
 class Camera
 {
   public:
@@ -15,8 +17,8 @@ class Camera
     mat4 getViewMatrix() const;
     mat4 getProjectionMatrix() const;
 
-    void mousePressEvent(const vec2i& mouse_position);
-    void mouseMoveEvent(const vec2i& mouse_position);
+    void mousePressEvent(const MouseEvent& event);
+    void mouseMoveEvent(const MouseEvent& event);
     void mouseWheelEvent(int delta);
 
   private:
