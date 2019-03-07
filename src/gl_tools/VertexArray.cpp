@@ -8,7 +8,7 @@ namespace GL
   VertexArray::VertexArray()
   {
     glGenVertexArrays(1, &name_);
-    error("vertex array allocation");
+    checkError("VertexArray::VertexArray()");
   }
 
   VertexArray::VertexArray(VertexArray&& other)
@@ -20,7 +20,7 @@ namespace GL
   VertexArray::~VertexArray()
   {
     glDeleteVertexArrays(1, &name_);
-    error("vertex array deletion");
+    checkError("VertexArray::~VertexArray()");
   }
 
   void VertexArray::bind() const

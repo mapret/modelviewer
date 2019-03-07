@@ -23,7 +23,7 @@ namespace
 
 namespace GL
 {
-  void error(const std::string_view at)
+  void checkError(const std::string_view at)
   {
     GLenum error;
     while ((error = glGetError()) != GL_NO_ERROR)

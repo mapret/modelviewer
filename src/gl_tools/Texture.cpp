@@ -1,3 +1,4 @@
+#include "Error.hpp"
 #include "GL.hpp"
 #include "Texture.hpp"
 
@@ -7,11 +8,13 @@ namespace GL
   Texture::Texture()
   {
     glGenTextures(1, &name_);
+    GL::checkError("Texture::Texture()");
   }
 
   Texture::~Texture()
   {
     glDeleteTextures(1, &name_);
+    GL::checkError("Texture::~Texture");
   }
 
   Texture::Texture(GL::Texture&& other) noexcept

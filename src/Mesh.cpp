@@ -34,12 +34,12 @@ Mesh::Mesh(std::vector<GeometryVertex>&& geometry_vertices,
   glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(GeometryVertex), (void*)offsetof(GeometryVertex, vertex_weights));
 
   GL::VertexArray::unbind();
-  GL::error("Mesh::Mesh()");
+  GL::checkError("Mesh::Mesh()");
 }
 
 Mesh::~Mesh()
 {
-  GL::error("Mesh::~Mesh()");
+  GL::checkError("Mesh::~Mesh()");
 }
 
 void Mesh::setMaterial(Material&& material)

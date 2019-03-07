@@ -8,7 +8,7 @@ namespace GL
   FrameBuffer::FrameBuffer()
   {
     glGenFramebuffers(1, &name_);
-    error("framebuffer allocation");
+    checkError("FrameBuffer::FrameBuffer()");
   }
 
   FrameBuffer::FrameBuffer(FrameBuffer&& other)
@@ -20,7 +20,7 @@ namespace GL
   FrameBuffer::~FrameBuffer()
   {
     glDeleteRenderbuffers(1, &name_);
-    error("framebuffer deletion");
+    checkError("FrameBuffer::~FrameBuffer()");
   }
 
   void FrameBuffer::bind(GLenum target) const

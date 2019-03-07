@@ -25,14 +25,15 @@ namespace GL
       GLchar infoLog[1024]{0};
       GLsizei log_length;
       glGetProgramInfoLog(name_, 1024, &log_length, infoLog);
-      throw std::runtime_error(std::string("Program::Program (") + name + "): " + infoLog);
+      throw std::runtime_error(std::string("Program::Program(...) (") + name + "): " + infoLog);
     }
+    checkError("Program::Program()");
   }
 
   Program::~Program()
   {
     glDeleteProgram(name_);
-    GL::error("Program::~Program()");
+    GL::checkError("Program::~Program()");
   }
 
   Program::Program(Program&& other) noexcept

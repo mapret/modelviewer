@@ -34,15 +34,15 @@ namespace GL
     {
       GLchar infoLog[1024]{0};
       glGetShaderInfoLog(name_, 1024, NULL, infoLog);
-      throw std::runtime_error(std::string("ERROR::SHADER_COMPILATION_ERROR (") + name + " " + getTypeName() + "): " + infoLog);
+      throw std::runtime_error(std::string("Shader::Shader(): compilation error (") + name + " " + getTypeName() + "): " + infoLog);
     }
-    else
-      GL::error(std::string("Shader::setupShader(): shader-name='") + name + "'");
+    GL::checkError(std::string("Shader::Shader(): shader-name='") + name + "'");
   }
 
   Shader::~Shader()
   {
     glDeleteShader(name_);
+    GL::checkError("Shader::~Shader()");
   }
 
   void Shader::attachTo(GLuint program_name) const

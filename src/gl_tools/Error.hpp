@@ -5,5 +5,5 @@
 
 namespace GL
 {
-  void error(std::string_view at = "");
+  void checkError(std::string_view at = "");
 }

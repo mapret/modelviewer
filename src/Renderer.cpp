@@ -2,6 +2,7 @@
 #include "Camera.hpp"
 #include "Model.hpp"
 #include "Renderer.hpp"
+#include "gl_tools/Error.hpp"
 #include "gl_tools/GL.hpp"
 #include "plaintext/opengl_shader.gen.hpp"
 
@@ -79,4 +80,5 @@ void Renderer::draw(const Model& model, const BoneTransform& transform, const Ca
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mesh.getNumberOfIndices()), GL_UNSIGNED_INT, nullptr);
   }
   GL::VertexArray::unbind();
+  GL::checkError("Renderer::draw()");
 }

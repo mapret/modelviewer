@@ -8,7 +8,7 @@ namespace GL
   Buffer::Buffer()
   {
     glGenBuffers(1, &name_);
-    error("name allocation");
+    checkError("Buffer::Buffer()");
   }
 
   Buffer::Buffer(Buffer&& other)
@@ -20,7 +20,7 @@ namespace GL
   Buffer::~Buffer()
   {
     glDeleteBuffers(1, &name_);
-    error("name deletion");
+    checkError("Buffer::~Buffer()");
   }
 
   void Buffer::bind(GLenum target) const
