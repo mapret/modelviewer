@@ -20,6 +20,10 @@ void main()
        bones[aBoneIndices.z] * vec4(aPos, 1.0f) * aBoneWeights.z +
        bones[aBoneIndices.w] * vec4(aPos, 1.0f) * aBoneWeights.w);
    gl_Position = Position;
-   Normal = vec3(model * vec4(aNormal, 0.f));
+   Normal = mat3(model) *
+       mat3(bones[aBoneIndices.x]) * aNormal * aBoneWeights.x +
+       mat3(bones[aBoneIndices.y]) * aNormal * aBoneWeights.y +
+       mat3(bones[aBoneIndices.z]) * aNormal * aBoneWeights.z +
+       mat3(bones[aBoneIndices.w]) * aNormal * aBoneWeights.w;
    Uv = aUv;
 }

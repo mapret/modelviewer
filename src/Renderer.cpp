@@ -57,6 +57,7 @@ void Renderer::draw(const Model& model, const BoneTransform& transform, const Ca
   shader_.use();
   shader_.setMat4("model", mat4());
   shader_.setMat4("proj_view", camera.getProjectionMatrix() * camera.getViewMatrix());
+  shader_.setVec3("uLightDirection", camera.getViewDirection());
 
   bool animation_active = transform.isAnimationActive();
   std::vector<mat4> bone_data(model.getBoneCount());

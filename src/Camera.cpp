@@ -34,6 +34,12 @@ mat4 Camera::getProjectionMatrix() const
   return mat4::perspective(fov_, aspect_ratio_, 0.1f, 1000.f);
 }
 
+vec3 Camera::getViewDirection() const
+{
+  recalculate();
+  return vec3::normalize(center_ - camera_position_);
+}
+
 void Camera::mousePressEvent(const MouseEvent& event)
 {
   previous_mouse_position_ = event.position;

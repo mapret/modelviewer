@@ -16,6 +16,7 @@ class Camera
 
     mat4 getViewMatrix() const;
     mat4 getProjectionMatrix() const;
+    vec3 getViewDirection() const;
 
     void mousePressEvent(const MouseEvent& event);
     void mouseMoveEvent(const MouseEvent& event);
