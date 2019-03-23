@@ -5,14 +5,12 @@
 #include "ModelImporter.hpp"
 #include "gl_tools/Error.hpp"
 #include "gl_tools/GL.hpp"
+#include "gl_tools/ImageIO.hpp"
 #include "gl_tools/Texture.hpp"
 #include <cassert>
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 
 bool ModelImporter::import(const std::filesystem::path& path, Model& model)
@@ -141,33 +139,8 @@ Material ModelImporter::loadMaterial(aiMaterial* mat)
       bool skip = false;
       std::replace(relative_texture_path.data, relative_texture_path.data + relative_texture_path.length, '\\', '/');
       std::filesystem::path path_to_file = directory_ / relative_texture_path.C_Str();
-
-      int width, height, nrComponents;
-      unsigned char* img_data = stbi_load(path_to_file.string().c_str(), &width, &height, &nrComponents, 0);
-      if (!img_data)
-        throw std::runtime_error("Failed to load " + path_to_file.string());
-
-      GLenum format = GL_RGB;
-      if (nrComponents == 1)
-        format = GL_RED;
-      else if (nrComponents == 3)
-        format = GL_RGB;
-      else if (nrComponents == 4)
-        format = GL_RGBA;
-
-      GL::Texture texture;
-      texture.bind(GL_TEXTURE0);
-      glTexImage2D(GL_TEXTURE_2D, 0, static_cast<GLint>(format), width, height, 0, format, GL_UNSIGNED_BYTE, img_data);
-      glGenerateMipmap(GL_TEXTURE_2D);
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-      GL::checkError("ModelImporter::loadMaterial()");
-      stbi_image_free(img_data);
-      material.texture = std::move(texture);
+      vec2u size;
+      material.texture = GL::loadImage(path_to_file, size);
     }
   }
 
