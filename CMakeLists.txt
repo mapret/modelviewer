@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(modelviewer)
-include(qt_functions.cmake)
-include(text2cpp.cmake)
+include(cmake/qt_functions.cmake)
+include(cmake/text2cpp.cmake)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 add_definitions(-DGLEW_STATIC)

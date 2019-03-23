@@ -71,7 +71,8 @@ void GlWidget::resizeGL(int w, int h)
 
 void GlWidget::loadFile(QString path)
 {
-  model_.import(path.toStdString());
+  if (!model_.import(path.toStdString()))
+    throw std::runtime_error("Failed to import \"" + path.toStdString() + "\"");
   transform_.setNumberOfBones(model_.getBoneCount());
   last_update_time_ = Clock::now();
   emit fileLoaded();
