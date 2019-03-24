@@ -25,4 +25,5 @@ class MainWindow : public QMainWindow
     void startAnimation(QListWidgetItem* item);
     void toggleAnimation();
     void resetAnimation();
+    void setWireframeVisible(bool value);
 };

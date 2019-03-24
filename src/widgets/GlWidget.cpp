@@ -110,6 +110,15 @@ void GlWidget::resetAnimation()
   repaint();
 }
 
+void GlWidget::setWireframeVisible(bool visible)
+{
+  if (visible)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+  else
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  repaint();
+}
+
 void GlWidget::mousePressEvent(QMouseEvent* event)
 {
   MouseEvent e(event);

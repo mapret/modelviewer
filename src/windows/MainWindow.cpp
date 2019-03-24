@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->lst_animations, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(startAnimation(QListWidgetItem*)));
   QObject::connect(ui_->btn_toggle_play, SIGNAL(pressed()), this, SLOT(toggleAnimation()));
   QObject::connect(ui_->btn_reset, SIGNAL(pressed()), this, SLOT(resetAnimation()));
+  QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
 }
 
 MainWindow::~MainWindow()
@@ -46,4 +47,9 @@ void MainWindow::toggleAnimation()
 void MainWindow::resetAnimation()
 {
   emit gl_widget_->resetAnimation();
+}
+
+void MainWindow::setWireframeVisible(bool value)
+{
+  emit gl_widget_->setWireframeVisible(value);
 }

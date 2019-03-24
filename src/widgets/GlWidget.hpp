@@ -47,6 +47,7 @@ class GlWidget : public QGLWidget
     void startAnimation();
     void toggleAnimation();
     void resetAnimation();
+    void setWireframeVisible(bool visible);
     void onUpdate();
 
   signals:
