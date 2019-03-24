@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 #include "MouseEvent.hpp"
+#include "math/math.hpp"
 
 
 Camera::Camera(const vec3& center, float radius, float latitude, float longitude, float fov, float aspect_ratio)
@@ -76,9 +77,15 @@ void Camera::mouseMoveEvent(const MouseEvent& event)
   }
   else if (event.buttons & MouseEvent::Buttons::Middle)
   {
-    constexpr float PAN_SCALE = 0.5f;
+    float distance_from_camera = vec3::distance(camera_position_, last_clicked_);
+    vec3 r1 = getRayDirectionFromScreenPosition(previous_mouse_position_) * distance_from_camera;
+    vec3 r2 = getRayDirectionFromScreenPosition(event.position) * distance_from_camera;
+    float distance = vec3::distance(r1, r2);
     vec3 side = vec3::cross((center_ - camera_position_).normalized(), camera_up_);
-    center_ -= side * dp.x * PAN_SCALE - camera_up_ * dp.y * PAN_SCALE;
+    vec2 dp_norm = vec2(dp);
+    if (math::definitelyLessThan(0.f, dp_norm.length()))
+      dp_norm.normalize();
+    center_ -= side * dp_norm.x * distance - camera_up_ * dp_norm.y * distance;
   }
 
   previous_mouse_position_ = event.position;
