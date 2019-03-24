@@ -26,4 +26,5 @@ class MainWindow : public QMainWindow
     void toggleAnimation();
     void resetAnimation();
     void setWireframeVisible(bool value);
+    void setAnimationSpeed(double value);
 };

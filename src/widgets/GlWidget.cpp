@@ -52,7 +52,7 @@ void GlWidget::onUpdate()
 {
   std::chrono::duration<float> ts = Clock::now() - last_update_time_;
   last_update_time_ = Clock::now();
-  renderer_->update(model_, transform_, ts.count());
+  renderer_->update(model_, transform_, ts.count() * animation_speed_);
   repaint();
 }
 
@@ -117,6 +117,11 @@ void GlWidget::setWireframeVisible(bool visible)
   else
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
   repaint();
+}
+
+void GlWidget::setAnimationSpeed(float animation_speed)
+{
+  animation_speed_ = animation_speed;
 }
 
 void GlWidget::mousePressEvent(QMouseEvent* event)

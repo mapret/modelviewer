@@ -40,6 +40,7 @@ class GlWidget : public QGLWidget
     Camera camera_;
     QTimer update_timer_;
     Clock::time_point last_update_time_;
+    float animation_speed_ = 1.f;
 
   public slots:
     void loadFile(QString path);
@@ -48,6 +49,7 @@ class GlWidget : public QGLWidget
     void toggleAnimation();
     void resetAnimation();
     void setWireframeVisible(bool visible);
+    void setAnimationSpeed(float animation_speed);
     void onUpdate();
 
   signals:

@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->btn_toggle_play, SIGNAL(pressed()), this, SLOT(toggleAnimation()));
   QObject::connect(ui_->btn_reset, SIGNAL(pressed()), this, SLOT(resetAnimation()));
   QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
+  QObject::connect(ui_->spn_animation_speed, SIGNAL(valueChanged(double)), this, SLOT(setAnimationSpeed(double)));
 }
 
 MainWindow::~MainWindow()
@@ -52,4 +53,9 @@ void MainWindow::resetAnimation()
 void MainWindow::setWireframeVisible(bool value)
 {
   emit gl_widget_->setWireframeVisible(value);
+}
+
+void MainWindow::setAnimationSpeed(double value)
+{
+  emit gl_widget_->setAnimationSpeed(static_cast<float>(value));
 }
