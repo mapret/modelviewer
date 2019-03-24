@@ -66,7 +66,7 @@ void GlWidget::resizeGL(int w, int h)
 {
   QGLWidget::resizeGL(w, h);
   glViewport(0, 0, w, h);
-  camera_.setAspectRatio(static_cast<float>(w) / h);
+  camera_.setWindowSize(vec2u(w, h));
 }
 
 void GlWidget::loadFile(QString path)
@@ -112,7 +112,15 @@ void GlWidget::resetAnimation()
 
 void GlWidget::mousePressEvent(QMouseEvent* event)
 {
-  camera_.mousePressEvent(MouseEvent(event));
+  MouseEvent e(event);
+  camera_.mousePressEvent(e);
+  if (e.buttons & MouseEvent::Buttons::Middle)
+  {
+    vec3 ray_dir = camera_.getRayDirectionFromScreenPosition(e.position);
+    float t = model_.intersectRay(camera_.getPosition(), ray_dir, transform_);
+    if (t != std::numeric_limits<float>::infinity())
+      camera_.setLastClickedPosition(camera_.getPosition() + ray_dir * t);
+  }
 }
 
 void GlWidget::mouseMoveEvent(QMouseEvent* event)

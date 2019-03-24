@@ -17,9 +17,21 @@ void Camera::setVerticalFieldOfView(float fov)
   fov_ = fov;
 }
 
-void Camera::setAspectRatio(float aspect_ratio)
+void Camera::setWindowSize(const vec2u& window_size)
 {
-  aspect_ratio_ = aspect_ratio;
+  window_size_ = window_size;
+  aspect_ratio_ = static_cast<float>(window_size.x) / window_size.y;
+}
+
+void Camera::setLastClickedPosition(const vec3& last_clicked)
+{
+  last_clicked_ = last_clicked;
+}
+
+const vec3& Camera::getPosition() const
+{
+  recalculate();
+  return camera_position_;
 }
 
 mat4 Camera::getViewMatrix() const
@@ -38,6 +50,14 @@ vec3 Camera::getViewDirection() const
 {
   recalculate();
   return vec3::normalize(center_ - camera_position_);
+}
+
+vec3 Camera::getRayDirectionFromScreenPosition(const vec2i& mouse_position) const
+{
+  mat4 inv_vp = (getProjectionMatrix() * getViewMatrix()).inverse();
+  vec4 screen_pos(2.f * mouse_position.x / window_size_.x - 1.f, 2.f * (window_size_.y - mouse_position.y) / window_size_.y - 1.f, 1.f, 1.f);
+  vec4 world_pos = inv_vp * screen_pos;
+  return world_pos.xyz().normalized();
 }
 
 void Camera::mousePressEvent(const MouseEvent& event)

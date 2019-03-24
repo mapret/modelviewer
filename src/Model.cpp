@@ -1,3 +1,4 @@
+#include "BoneTransform.hpp"
 #include "Model.hpp"
 #include "ModelImporter.hpp"
 #include <cassert>
@@ -73,4 +74,29 @@ size_t Model::getAnimationIndex(const std::string& name) const
 const Animation& Model::getAnimation(size_t index) const
 {
   return animations_[index];
+}
+
+std::vector<mat4> Model::getTransformMatrices(const BoneTransform& transform) const
+{
+  std::vector<mat4> bone_data(getBoneCount());
+  bool animation_active = transform.isAnimationActive();
+  std::function<void(size_t, const mat4&)> setupBones = [&](size_t bone_index, const mat4& parent_transform)
+  {
+    const auto& bone = getBone(bone_index);
+    mat4 self_transform = parent_transform * (animation_active ? transform.getTransform(bone_index) : bone.getNodeOffset());
+    bone_data[bone_index] = self_transform * bone.getBoneOffset();
+    for (const auto& child_index : bone.getChildIndices())
+      setupBones(child_index, self_transform);
+  };
+  setupBones(0, mat4());
+  return bone_data;
+}
+
+float Model::intersectRay(const vec3& ray_origin, const vec3& ray_direction, const BoneTransform& transform) const
+{
+  auto bone_transforms = getTransformMatrices(transform);
+  float t = std::numeric_limits<float>::infinity();
+  for (const auto& mesh : meshes_)
+    t = std::min(t, mesh.intersectRay(ray_origin, ray_direction, bone_transforms));
+  return t;
 }

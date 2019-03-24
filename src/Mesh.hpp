@@ -5,6 +5,8 @@
 #include "Vertex.hpp"
 #include "gl_tools/VertexArray.hpp"
 #include "gl_tools/Buffer.hpp"
+#include "math/mat4.hpp"
+#include "math/vec3.hpp"
 #include <cstdint>
 #include <vector>
 
@@ -22,6 +24,7 @@ class Mesh
     const Material& getMaterial() const;
     const GL::VertexArray& getVertexArray() const;
     size_t getNumberOfIndices() const;
+    float intersectRay(const vec3& ray_origin, const vec3& ray_direction, const std::vector<mat4>& bone_transforms) const;
 
   private:
     std::vector<GeometryVertex> vertices_;

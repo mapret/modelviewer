@@ -6,6 +6,8 @@
 #include <filesystem>
 
 
+class BoneTransform;
+
 class Model
 {
   public:
@@ -23,6 +25,8 @@ class Model
     std::vector<std::string> getAnimationNames() const;
     size_t getAnimationIndex(const std::string& name) const;
     const Animation& getAnimation(size_t index) const;
+    std::vector<mat4> getTransformMatrices(const BoneTransform& transform) const;
+    float intersectRay(const vec3& ray_origin, const vec3& ray_direction, const BoneTransform& bone_transform) const;
 
     static const size_t	npos = static_cast<size_t>(-1);
 

@@ -59,17 +59,7 @@ void Renderer::draw(const Model& model, const BoneTransform& transform, const Ca
   shader_.setMat4("proj_view", camera.getProjectionMatrix() * camera.getViewMatrix());
   shader_.setVec3("uLightDirection", camera.getViewDirection());
 
-  bool animation_active = transform.isAnimationActive();
-  std::vector<mat4> bone_data(model.getBoneCount());
-  std::function<void(size_t, const mat4&)> setupBones = [&](size_t bone_index, const mat4& parent_transform)
-  {
-    const auto& bone = model.getBone(bone_index);
-    mat4 self_transform = parent_transform * (animation_active ? transform.getTransform(bone_index) : bone.getNodeOffset());
-    bone_data[bone_index] = self_transform * bone.getBoneOffset();
-    for (const auto& child_index : bone.getChildIndices())
-      setupBones(child_index, self_transform);
-  };
-  setupBones(0, mat4());
+  auto bone_data = model.getTransformMatrices(transform);
   shader_.setMat4("bones", bone_data.data(), bone_data.size());
 
   for (const auto& mesh : model.getMeshes())
