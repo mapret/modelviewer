@@ -8,7 +8,7 @@
 struct GeometryVertex
 {
   vec3 position;
-  vec3u bone_indices;
+  vec4u bone_indices;
   vec4 vertex_weights;
 };
 
