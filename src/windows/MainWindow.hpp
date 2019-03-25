@@ -22,9 +22,11 @@ class MainWindow : public QMainWindow
 
   private slots:
     void fileLoaded();
+    void setWireframeVisible(bool value);
+    void resetCamera();
+    void resetCameraZoom();
     void startAnimation(QListWidgetItem* item);
     void toggleAnimation();
     void resetAnimation();
-    void setWireframeVisible(bool value);
     void setAnimationSpeed(double value);
 };

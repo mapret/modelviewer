@@ -126,6 +126,12 @@ void GlWidget::setAnimationSpeed(float animation_speed)
   animation_speed_ = animation_speed;
 }
 
+void GlWidget::resetCamera()
+{
+  camera_.reset();
+  resetCameraZoom();
+}
+
 void GlWidget::resetCameraZoom()
 {
   camera_.setFrustumSidePlanes(model_.getMinimumEnclosingFrustum(camera_, transform_));

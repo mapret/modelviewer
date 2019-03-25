@@ -12,6 +12,7 @@ class Camera
   public:
     Camera(const vec3& center = vec3(), float radius = 2, float latitude = 0, float longitude = 0, float fovy = .8f, float aspect_ratio = 16/9.f);
 
+    void reset();
     void setFrustumSidePlanes(const std::array<Plane, 4>& planes);
     void setWindowSize(const vec2u& window_size);
     void setLastClickedPosition(const vec3& last_clicked);

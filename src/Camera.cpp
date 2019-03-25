@@ -13,6 +13,15 @@ Camera::Camera(const vec3& center, float radius, float latitude, float longitude
 {
 }
 
+void Camera::reset()
+{
+  radius_ = 2.f;
+  latitude_ = 0.f;
+  longitude_ = 0.f;
+  fovy_ = 0.8f;
+  dirty_bit_ = true;
+}
+
 void Camera::setFrustumSidePlanes(const std::array<Plane, 4>& planes)
 {
   Line l1 = Plane::intersect(planes[0], planes[2]); //Horizontal
