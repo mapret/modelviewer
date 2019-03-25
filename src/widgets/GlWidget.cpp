@@ -154,7 +154,8 @@ void GlWidget::mousePressEvent(QMouseEvent* event)
 void GlWidget::mouseMoveEvent(QMouseEvent* event)
 {
   camera_.mouseMoveEvent(MouseEvent(event));
-  repaint();
+  if (!update_timer_.isActive())
+    repaint();
 }
 
 void GlWidget::wheelEvent(QWheelEvent* event)
