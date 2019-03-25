@@ -3,19 +3,35 @@
 #include "math/math.hpp"
 
 
-Camera::Camera(const vec3& center, float radius, float latitude, float longitude, float fov, float aspect_ratio)
+Camera::Camera(const vec3& center, float radius, float latitude, float longitude, float fovy, float aspect_ratio)
   : center_(center),
     radius_(radius),
     latitude_(latitude),
     longitude_(longitude),
-    fov_(fov),
+    fovy_(fovy),
     aspect_ratio_(aspect_ratio)
 {
 }
 
-void Camera::setVerticalFieldOfView(float fov)
+void Camera::setFrustumSidePlanes(const std::array<Plane, 4>& planes)
 {
-  fov_ = fov;
+  Line l1 = Plane::intersect(planes[0], planes[2]); //Horizontal
+  Line l2 = Plane::intersect(planes[1], planes[3]); //Vertical
+  vec3 pa = l1.closestPoint(l2);
+  vec3 pb = l2.closestPoint(l1);
+
+  bool a_closer = vec3::dot(pa - pb, planes[0].getNormal()) > 0;
+  if (a_closer)
+  {
+    radius_ = pa.length();
+    center_ = pa + (pb - pa).normalized() * radius_;
+  }
+  else
+  {
+    radius_ = pb.length();
+    center_ = pb + (pa - pb).normalized() * radius_;
+  }
+  dirty_bit_ = true;
 }
 
 void Camera::setWindowSize(const vec2u& window_size)
@@ -44,7 +60,7 @@ mat4 Camera::getViewMatrix() const
 mat4 Camera::getProjectionMatrix() const
 {
   recalculate();
-  return mat4::perspective(fov_, aspect_ratio_, 0.1f, 1000.f);
+  return mat4::perspective(fovy_, aspect_ratio_, 0.1f, 1000.f);
 }
 
 vec3 Camera::getViewDirection() const
@@ -59,6 +75,30 @@ vec3 Camera::getRayDirectionFromScreenPosition(const vec2i& mouse_position) cons
   vec4 screen_pos(2.f * mouse_position.x / window_size_.x - 1.f, 2.f * (window_size_.y - mouse_position.y) / window_size_.y - 1.f, 1.f, 1.f);
   vec4 world_pos = inv_vp * screen_pos;
   return world_pos.xyz().normalized();
+}
+
+std::array<Plane, 4> Camera::getFrustumSidePlanes() const
+{
+  recalculate();
+  vec3 forward = (center_ - camera_position_).normalized();
+  vec3 left = vec3::cross((center_ - camera_position_).normalized(), camera_up_);
+  float tanx = std::tan(fovy_ * aspect_ratio_ / 2.f);
+  float tany = std::tan(fovy_ / 2.f);
+
+  std::array<vec3, 4> corners = {
+      camera_position_ + forward + left * tanx + camera_up_ * tany,
+      camera_position_ + forward - left * tanx + camera_up_ * tany,
+      camera_position_ + forward - left * tanx - camera_up_ * tany,
+      camera_position_ + forward + left * tanx - camera_up_ * tany
+  };
+
+  std::array<Plane, 4> planes;
+  for (size_t i = 0; i < corners.size(); i++)
+  {
+    planes[i] = {corners[i], corners[(i + 1) % corners.size()], camera_position_};
+    planes[i].setDistanceFromOrigin(-1000.f);
+  }
+  return planes;
 }
 
 void Camera::mousePressEvent(const MouseEvent& event)

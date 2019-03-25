@@ -42,6 +42,7 @@ void GlWidget::initializeGL()
   if (glewInit() != GLEW_OK)
     throw std::runtime_error("Failed to initialize GLEW");
   renderer_ = std::make_unique<Renderer>();
+  camera_.setWindowSize(vec2u(width(), height()));
 
   auto arguments = QApplication::arguments();
   if (arguments.size() >= 2)
@@ -75,6 +76,7 @@ void GlWidget::loadFile(QString path)
     throw std::runtime_error("Failed to import \"" + path.toStdString() + "\"");
   transform_.setNumberOfBones(model_.getBoneCount());
   last_update_time_ = Clock::now();
+  resetCameraZoom();
   emit fileLoaded();
 }
 
@@ -122,6 +124,12 @@ void GlWidget::setWireframeVisible(bool visible)
 void GlWidget::setAnimationSpeed(float animation_speed)
 {
   animation_speed_ = animation_speed;
+}
+
+void GlWidget::resetCameraZoom()
+{
+  camera_.setFrustumSidePlanes(model_.getMinimumEnclosingFrustum(camera_, transform_));
+  repaint();
 }
 
 void GlWidget::mousePressEvent(QMouseEvent* event)

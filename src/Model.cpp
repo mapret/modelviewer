@@ -1,6 +1,8 @@
 #include "BoneTransform.hpp"
+#include "Camera.hpp"
 #include "Model.hpp"
 #include "ModelImporter.hpp"
+#include "math/Plane.hpp"
 #include <cassert>
 
 
@@ -99,4 +101,13 @@ float Model::intersectRay(const vec3& ray_origin, const vec3& ray_direction, con
   for (const auto& mesh : meshes_)
     t = std::min(t, mesh.intersectRay(ray_origin, ray_direction, bone_transforms));
   return t;
+}
+
+std::array<Plane, 4> Model::getMinimumEnclosingFrustum(const Camera& camera, const BoneTransform& transform) const
+{
+  auto planes = camera.getFrustumSidePlanes();
+  auto bone_transforms = getTransformMatrices(transform);
+  for (const auto& mesh : meshes_)
+    mesh.updateMinimumEnclosingPlanes(planes, bone_transforms);
+  return planes;
 }

@@ -50,6 +50,7 @@ class GlWidget : public QGLWidget
     void resetAnimation();
     void setWireframeVisible(bool visible);
     void setAnimationSpeed(float animation_speed);
+    void resetCameraZoom();
     void onUpdate();
 
   signals:

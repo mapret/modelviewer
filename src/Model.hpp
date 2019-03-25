@@ -7,6 +7,7 @@
 
 
 class BoneTransform;
+class Camera;
 
 class Model
 {
@@ -27,6 +28,7 @@ class Model
     const Animation& getAnimation(size_t index) const;
     std::vector<mat4> getTransformMatrices(const BoneTransform& transform) const;
     float intersectRay(const vec3& ray_origin, const vec3& ray_direction, const BoneTransform& bone_transform) const;
+    std::array<Plane, 4> getMinimumEnclosingFrustum(const Camera& camera, const BoneTransform& transform) const;
 
     static const size_t	npos = static_cast<size_t>(-1);
 
