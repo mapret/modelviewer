@@ -96,7 +96,7 @@ std::array<Plane, 4> Camera::getFrustumSidePlanes() const
   for (size_t i = 0; i < corners.size(); i++)
   {
     planes[i] = {corners[i], corners[(i + 1) % corners.size()], camera_position_};
-    planes[i].setDistanceFromOrigin(-1000.f);
+    planes[i].setDistanceFromOrigin(-1000000.f); //TODO: do something different here
   }
   return planes;
 }

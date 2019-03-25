@@ -2,6 +2,7 @@
 #include "Camera.hpp"
 #include "Model.hpp"
 #include "ModelImporter.hpp"
+#include "math/Intersections.hpp"
 #include "math/Plane.hpp"
 #include <cassert>
 
@@ -98,8 +99,10 @@ float Model::intersectRay(const vec3& ray_origin, const vec3& ray_direction, con
 {
   auto bone_transforms = getTransformMatrices(transform);
   float t = std::numeric_limits<float>::infinity();
-  for (const auto& mesh : meshes_)
-    t = std::min(t, mesh.intersectRay(ray_origin, ray_direction, bone_transforms));
+  forEachTriangle(bone_transforms, [&](const vec3& p1, const vec3& p2, const vec3& p3)
+  {
+    t = std::min(t, Intersections::rayTriangle(p1, p2, p3, ray_origin, ray_direction));
+  });
   return t;
 }
 
@@ -107,7 +110,23 @@ std::array<Plane, 4> Model::getMinimumEnclosingFrustum(const Camera& camera, con
 {
   auto planes = camera.getFrustumSidePlanes();
   auto bone_transforms = getTransformMatrices(transform);
-  for (const auto& mesh : meshes_)
-    mesh.updateMinimumEnclosingPlanes(planes, bone_transforms);
+  forEachTriangle(bone_transforms, [&](const vec3& p1, const vec3& p2, const vec3& p3)
+  {
+    for (auto& plane : planes)
+    {
+      if (plane.signedDistance(p1) > 0)
+        plane.setDistanceFromOrigin(p1);
+      if (plane.signedDistance(p2) > 0)
+        plane.setDistanceFromOrigin(p2);
+      if (plane.signedDistance(p3) > 0)
+        plane.setDistanceFromOrigin(p3);
+    }
+  });
   return planes;
+}
+
+void Model::forEachTriangle(const std::vector<mat4>& bone_transforms, Mesh::TriangleCallback callback) const
+{
+  for (const auto& mesh : meshes_)
+    mesh.forEachTriangle(bone_transforms, callback);
 }

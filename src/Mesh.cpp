@@ -64,29 +64,7 @@ size_t Mesh::getNumberOfIndices() const
   return indices_.size();
 }
 
-float Mesh::intersectRay(const vec3& ray_origin, const vec3& ray_direction, const std::vector<mat4>& bone_transforms) const
-{
-  auto getVertex = [&](const GeometryVertex& v)
-  {
-    vec4 r(bone_transforms[v.bone_indices.x] * vec4(v.position, 1.f) * v.vertex_weights.x +
-           bone_transforms[v.bone_indices.y] * vec4(v.position, 1.f) * v.vertex_weights.y +
-           bone_transforms[v.bone_indices.z] * vec4(v.position, 1.f) * v.vertex_weights.z +
-           bone_transforms[v.bone_indices.w] * vec4(v.position, 1.f) * v.vertex_weights.w);
-    return r.xyz() / r.w;
-  };
-
-  float t = std::numeric_limits<float>::infinity();
-  for (size_t i = 0; i < indices_.size(); i += 3)
-  {
-    vec3 p1 = getVertex(vertices_[indices_[i]]);
-    vec3 p2 = getVertex(vertices_[indices_[i + 1]]);
-    vec3 p3 = getVertex(vertices_[indices_[i + 2]]);
-    t = std::min(t, Intersections::rayTriangle(p1, p2, p3, ray_origin, ray_direction));
-  }
-  return t;
-}
-
-void Mesh::updateMinimumEnclosingPlanes(std::array<Plane, 4>& planes, const std::vector<mat4>& bone_transforms) const
+void Mesh::forEachTriangle(const std::vector<mat4>& bone_transforms, TriangleCallback callback) const
 {
   auto getVertex = [&](const GeometryVertex& v)
   {
@@ -102,14 +80,6 @@ void Mesh::updateMinimumEnclosingPlanes(std::array<Plane, 4>& planes, const std:
     vec3 p1 = getVertex(vertices_[indices_[i]]);
     vec3 p2 = getVertex(vertices_[indices_[i + 1]]);
     vec3 p3 = getVertex(vertices_[indices_[i + 2]]);
-    for (auto& plane : planes)
-    {
-      if (plane.signedDistance(p1) > 0)
-        plane.setDistanceFromOrigin(p1);
-      if (plane.signedDistance(p2) > 0)
-        plane.setDistanceFromOrigin(p2);
-      if (plane.signedDistance(p3) > 0)
-        plane.setDistanceFromOrigin(p3);
-    }
+    callback(p1, p2, p3);
   }
 }

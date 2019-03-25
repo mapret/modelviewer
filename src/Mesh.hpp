@@ -16,6 +16,8 @@ class Plane;
 class Mesh
 {
   public:
+    using TriangleCallback = std::function<void(const vec3& p1, const vec3& p2, const vec3& p3)>;
+
     Mesh(std::vector<GeometryVertex>&& geometry_vertices,
          const std::vector<GraphicsVertex>& graphics_vertices,
          std::vector<uint32_t>&& indices);
@@ -26,8 +28,7 @@ class Mesh
     const Material& getMaterial() const;
     const GL::VertexArray& getVertexArray() const;
     size_t getNumberOfIndices() const;
-    float intersectRay(const vec3& ray_origin, const vec3& ray_direction, const std::vector<mat4>& bone_transforms) const;
-    void updateMinimumEnclosingPlanes(std::array<Plane, 4>& planes, const std::vector<mat4>& bone_transforms) const;
+    void forEachTriangle(const std::vector<mat4>& bone_transforms, TriangleCallback callback) const;
 
   private:
     std::vector<GeometryVertex> vertices_;
