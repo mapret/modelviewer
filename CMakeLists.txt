@@ -24,7 +24,6 @@ find_library(libassimp assimp HINTS ${CMAKE_CURRENT_LIST_DIR}/external/assimp)
 get_filename_component(PROJECT_DIR "." ABSOLUTE)
 set(SOURCE_DIR "${PROJECT_DIR}/src")
 set(UI_DIR "${PROJECT_DIR}/ui")
-set(LIBRARY_DIR "${PROJECT_DIR}/include")
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
@@ -53,7 +52,7 @@ addPlaintext(opengl_shader ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${glsl_
 add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader})
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
-include_directories(SYSTEM ${LIBRARY_DIR})
+
 if (UNIX)
     include_directories(/usr/include/qt) #TODO: Find a better way to do this
 endif()
