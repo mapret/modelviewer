@@ -31,6 +31,7 @@ class GlWidget : public QGLWidget
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void wheelEvent(QWheelEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
   private:
     MainWindow* main_window_;
@@ -40,6 +41,7 @@ class GlWidget : public QGLWidget
     Camera camera_;
     QTimer update_timer_;
     Clock::time_point last_update_time_;
+    std::vector<QWidget*> visible_dock_widgets_;
     float animation_speed_ = 1.f;
 
   public slots:

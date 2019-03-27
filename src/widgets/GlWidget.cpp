@@ -5,6 +5,7 @@
 #include "windows/MainWindow.hpp"
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QDockWidget>
 
 
 namespace
@@ -162,4 +163,23 @@ void GlWidget::wheelEvent(QWheelEvent* event)
 {
   camera_.mouseWheelEvent(event->delta());
   repaint();
+}
+
+void GlWidget::mouseDoubleClickEvent(QMouseEvent* event)
+{
+  if (visible_dock_widgets_.empty())
+  {
+    for (auto* widget : main_window_->topLevelWidget()->findChildren<QDockWidget*>())
+      if (widget->isVisible())
+      {
+        visible_dock_widgets_.push_back(widget);
+        widget->hide();
+      }
+  }
+  else
+  {
+    for (auto* widget : visible_dock_widgets_)
+      widget->show();
+    visible_dock_widgets_.clear();
+  }
 }
