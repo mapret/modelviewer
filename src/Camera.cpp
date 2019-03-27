@@ -47,6 +47,7 @@ void Camera::setWindowSize(const vec2u& window_size)
 {
   window_size_ = window_size;
   aspect_ratio_ = static_cast<float>(window_size.x) / window_size.y;
+  recently_resized_ = true;
 }
 
 void Camera::setLastClickedPosition(const vec3& last_clicked)
@@ -117,6 +118,12 @@ void Camera::mousePressEvent(const MouseEvent& event)
 
 void Camera::mouseMoveEvent(const MouseEvent& event)
 {
+  if (recently_resized_)
+  {
+    recently_resized_ = false;
+    mousePressEvent(event);
+  }
+
   vec2i dp = event.position - previous_mouse_position_;
   if (event.buttons & MouseEvent::Buttons::Left)
   {

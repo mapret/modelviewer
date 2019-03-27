@@ -39,6 +39,7 @@ class Camera
     vec2u window_size_;
     float aspect_ratio_;
     vec3 last_clicked_;
+    bool recently_resized_ = false;
 
     mutable bool dirty_bit_ = true;
     mutable vec3 camera_position_;
