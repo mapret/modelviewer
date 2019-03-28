@@ -135,7 +135,24 @@ void GlWidget::resetCamera()
 
 void GlWidget::resetCameraZoom()
 {
-  camera_.setFrustumSidePlanes(model_.getMinimumEnclosingFrustum(camera_, transform_));
+  auto planes = camera_.getFrustumSidePlanes();
+  vec3 center;
+  size_t num_vertices = 0;
+  model_.forEachTriangle(model_.getTransformMatrices(transform_), [&](const vec3& p1, const vec3& p2, const vec3& p3)
+  {
+    for (auto& plane : planes)
+    {
+      if (plane.signedDistance(p1) > 0) plane.setDistanceFromOrigin(p1);
+      if (plane.signedDistance(p2) > 0) plane.setDistanceFromOrigin(p2);
+      if (plane.signedDistance(p3) > 0) plane.setDistanceFromOrigin(p3);
+    }
+    center += p1;
+    center += p2;
+    center += p3;
+    num_vertices += 3;
+  });
+  center /= num_vertices;
+  camera_.setFrustumSidePlanes(planes, center);
   repaint();
 }
 

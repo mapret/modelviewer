@@ -22,7 +22,7 @@ void Camera::reset()
   dirty_bit_ = true;
 }
 
-void Camera::setFrustumSidePlanes(const std::array<Plane, 4>& planes)
+void Camera::setFrustumSidePlanes(const std::array<Plane, 4>& planes, const vec3& center)
 {
   Line l1 = Plane::intersect(planes[0], planes[2]); //Horizontal
   Line l2 = Plane::intersect(planes[1], planes[3]); //Vertical
@@ -30,16 +30,12 @@ void Camera::setFrustumSidePlanes(const std::array<Plane, 4>& planes)
   vec3 pb = l2.closestPoint(l1);
 
   bool a_closer = vec3::dot(pa - pb, planes[0].getNormal()) > 0;
-  if (a_closer)
-  {
-    radius_ = pa.length();
-    center_ = pa + (pb - pa).normalized() * radius_;
-  }
-  else
-  {
-    radius_ = pb.length();
-    center_ = pb + (pa - pb).normalized() * radius_;
-  }
+  if (!a_closer)
+    std::swap(pa, pb);
+
+  Line view_line(pa, pb - pa);
+  center_ = view_line.closestPoint(center);
+  radius_ = (center_ - pa).length();
   dirty_bit_ = true;
 }
 
