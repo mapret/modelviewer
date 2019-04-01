@@ -21,6 +21,7 @@ class MainWindow : public QMainWindow
     GlWidget* gl_widget_;
 
   private slots:
+    void openFileModal();
     void fileLoaded();
     void setWireframeVisible(bool value);
     void resetCamera();

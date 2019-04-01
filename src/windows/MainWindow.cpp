@@ -1,6 +1,7 @@
 #include "widgets/GlWidget.hpp"
 #include "MainWindow.hpp"
 #include "ui/mainwindow.ui.h"
+#include <QtWidgets/QFileDialog>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,10 +23,18 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->btn_toggle_play, SIGNAL(pressed()), this, SLOT(toggleAnimation()));
   QObject::connect(ui_->btn_reset, SIGNAL(pressed()), this, SLOT(resetAnimation()));
   QObject::connect(ui_->spn_animation_speed, SIGNAL(valueChanged(double)), this, SLOT(setAnimationSpeed(double)));
+  QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
 }
 
 MainWindow::~MainWindow()
 {
+}
+
+void MainWindow::openFileModal()
+{
+  auto path = QFileDialog::getOpenFileName(this, "Select a model file");
+  if (!path.isNull())
+    emit gl_widget_->loadFile(path);
 }
 
 void MainWindow::fileLoaded()
