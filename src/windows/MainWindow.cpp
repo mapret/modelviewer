@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->btn_reset, SIGNAL(pressed()), this, SLOT(resetAnimation()));
   QObject::connect(ui_->spn_animation_speed, SIGNAL(valueChanged(double)), this, SLOT(setAnimationSpeed(double)));
   QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
+  QObject::connect(ui_->act_exit, SIGNAL(triggered(bool)), this, SLOT(exitAction()));
 }
 
 MainWindow::~MainWindow()
@@ -35,6 +36,11 @@ void MainWindow::openFileModal()
   auto path = QFileDialog::getOpenFileName(this, "Select a model file");
   if (!path.isNull())
     emit gl_widget_->loadFile(path);
+}
+
+void MainWindow::exitAction()
+{
+  QApplication::exit(0);
 }
 
 void MainWindow::fileLoaded()

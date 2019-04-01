@@ -146,12 +146,19 @@
      <string>File</string>
     </property>
     <addaction name="act_open"/>
+    <addaction name="separator"/>
+    <addaction name="act_exit"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
   <action name="act_open">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="act_exit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>
