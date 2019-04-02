@@ -16,6 +16,9 @@ class MainWindow : public QMainWindow
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+  protected:
+    void closeEvent(QCloseEvent* event) override;
+
   private:
     std::unique_ptr<Ui::MainWindow> ui_;
     GlWidget* gl_widget_;

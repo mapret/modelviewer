@@ -1,6 +1,7 @@
 #include "widgets/GlWidget.hpp"
 #include "MainWindow.hpp"
 #include "ui/mainwindow.ui.h"
+#include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
 
 
@@ -14,6 +15,10 @@ MainWindow::MainWindow(QWidget *parent)
   gl_widget_ = new GlWidget(this);
   ui_->layout_gl->replaceWidget(ui_->gl_placeholder, gl_widget_);
   ui_->gl_placeholder->deleteLater();
+
+  QSettings settings;
+  restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
+  restoreState(settings.value("mainWindowState").toByteArray());
 
   QObject::connect(gl_widget_, SIGNAL(fileLoaded()), this, SLOT(fileLoaded()));
   QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
@@ -31,6 +36,16 @@ MainWindow::~MainWindow()
 {
 }
 
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+  QSettings settings;
+  settings.setValue("mainWindowGeometry", saveGeometry());
+  settings.setValue("mainWindowState", saveState());
+
+  QWidget::closeEvent(event);
+}
+
 void MainWindow::openFileModal()
 {
   auto path = QFileDialog::getOpenFileName(this, "Select a model file");
@@ -40,7 +55,7 @@ void MainWindow::openFileModal()
 
 void MainWindow::exitAction()
 {
-  QApplication::exit(0);
+  QApplication::closeAllWindows();
 }
 
 void MainWindow::fileLoaded()
