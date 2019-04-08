@@ -1,6 +1,7 @@
 #include "Error.hpp"
 #include "GL.hpp"
 #include <stdexcept>
+#include <string>
 
 
 namespace

@@ -1,7 +1,13 @@
 #include "Camera.hpp"
 #include "MouseEvent.hpp"
 #include "math/math.hpp"
+#include <array>
 
+
+namespace
+{
+  constexpr float PI = 3.14159265358979323846f;
+}
 
 Camera::Camera(const vec3& center, float radius, float latitude, float longitude, float fovy, float aspect_ratio)
   : center_(center),
@@ -123,7 +129,7 @@ void Camera::mouseMoveEvent(const MouseEvent& event)
   vec2i dp = event.position - previous_mouse_position_;
   if (event.buttons & MouseEvent::Buttons::Left)
   {
-    constexpr float LAT_MAX = static_cast<float>(M_PI_2) - 0.1f;
+    constexpr float LAT_MAX = PI / 2.f - 0.1f;
     latitude_ = std::clamp(latitude_ + dp.y / 100.f, -LAT_MAX, LAT_MAX);
     longitude_ += dp.x / 100.f;
   }
@@ -166,7 +172,7 @@ void Camera::recalculate() const
       vec3(std::cos(latitude_) * std::cos(longitude_),
            std::sin(latitude_),
            std::cos(latitude_) * std::sin(longitude_));
-  camera_up_ = vec3(std::cos(latitude_ + static_cast<float>(M_PI_2)) * std::cos(longitude_),
-                    std::sin(latitude_ + static_cast<float>(M_PI_2)),
-                    std::cos(latitude_ + static_cast<float>(M_PI_2)) * std::sin(longitude_));
+  camera_up_ = vec3(std::cos(latitude_ + static_cast<float>(PI / 2.f)) * std::cos(longitude_),
+                    std::sin(latitude_ + static_cast<float>(PI / 2.f)),
+                    std::cos(latitude_ + static_cast<float>(PI / 2.f)) * std::sin(longitude_));
 }

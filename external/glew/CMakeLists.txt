@@ -93,14 +93,11 @@ set_target_properties (glew PROPERTIES COMPILE_DEFINITIONS "GLEW_STATIC" OUTPUT_
 
 if (MSVC)
   # add options from visual studio project
-  target_compile_definitions (glew PRIVATE "GLEW_BUILD;VC_EXTRALEAN")
-  target_compile_definitions (glew_s PRIVATE "GLEW_STATIC;VC_EXTRALEAN")
-  target_link_libraries (glew LINK_PRIVATE -BASE:0x62AA0000)
+  target_compile_definitions (glew PRIVATE "GLEW_STATIC;VC_EXTRALEAN")
+  target_link_libraries (glew -BASE:0x62AA0000)
   # kill security checks which are dependent on stdlib
   target_compile_options (glew PRIVATE -GS-)
-  target_compile_options (glew_s PRIVATE -GS-)
   # remove stdlib dependency
-  target_link_libraries (glew LINK_PRIVATE -nodefaultlib -noentry)
   string(REGEX REPLACE "/RTC(su|[1su])" "" CMAKE_C_FLAGS_DEBUG ${CMAKE_C_FLAGS_DEBUG})
 elseif (WIN32 AND ((CMAKE_C_COMPILER_ID MATCHES "GNU") OR (CMAKE_C_COMPILER_ID MATCHES "Clang")))
   # remove stdlib dependency on windows with GCC and Clang (for similar reasons
@@ -162,14 +159,6 @@ endif ()
 install(FILES ${GLEW_DIR}/glew.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
-
-if(WIN32 AND MSVC AND (NOT MSVC_VERSION LESS 1600) AND (NOT CMAKE_VERSION VERSION_LESS "3.1"))
-    install(
-        FILES $<TARGET_PDB_FILE:glew>
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        CONFIGURATIONS Debug RelWithDebInfo
-    )
-endif()
 
 install (FILES
     ${GLEW_DIR}/include/GL/wglew.h

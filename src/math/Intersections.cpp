@@ -9,7 +9,7 @@ float Intersections::rayTriangle(const vec3& p1, const vec3& p2, const vec3& p3,
   vec3 S = ray_origin - p1;
   vec3 S1 = vec3::cross(ray_direction, E2);
   vec3 S2 = vec3::cross(S, E1);
-  float denum = 1. / vec3::dot(S1, E1);
+  float denum = 1.f / vec3::dot(S1, E1);
   float t = vec3::dot(S2, E2) * denum;
   float b1 = vec3::dot(S1, S) * denum;
   float b2 = vec3::dot(S2, ray_direction) * denum;

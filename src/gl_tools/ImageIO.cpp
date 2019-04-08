@@ -12,8 +12,8 @@ GL::Texture GL::loadImage(const std::filesystem::path& path, vec2u& size)
   unsigned char* img_data = stbi_load(path.string().c_str(), &width, &height, &num_components, 0);
   if (!img_data)
     throw std::runtime_error("Failed to load \"" + path.string() + "\"");
-  size.x = static_cast<typeof(size.x)>(width);
-  size.y = static_cast<typeof(size.y)>(height);
+  size.x = static_cast<decltype(size.x)>(width);
+  size.y = static_cast<decltype(size.y)>(height);
   auto texture = uploadTextureToGPU(img_data, width, height, num_components);
   stbi_image_free(img_data);
   return texture;

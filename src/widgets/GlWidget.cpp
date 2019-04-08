@@ -3,6 +3,7 @@
 #include "MouseEvent.hpp"
 #include "Renderer.hpp"
 #include "windows/MainWindow.hpp"
+#include <array>
 #include <QtGui/QMouseEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDockWidget>

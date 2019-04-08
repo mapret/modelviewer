@@ -18,7 +18,7 @@ ExternalProject_Add(assimp
     CMAKE_ARGS -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DCMAKE_BUILD_TYPE=Release -DASSIMP_LIB_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp -DASSIMP_BIN_INSTALL_DIR=${CMAKE_BINARY_DIR} -DASSIMP_INCLUDE_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp/include
 )
 include_directories(external/assimp/include)
-find_library(libassimp assimp HINTS ${CMAKE_CURRENT_LIST_DIR}/external/assimp)
+find_library(libassimp NAMES assimp assimp-vc140-mt HINTS ${CMAKE_CURRENT_LIST_DIR}/external/assimp)
 
 
 get_filename_component(PROJECT_DIR "." ABSOLUTE)

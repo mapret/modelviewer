@@ -12,11 +12,7 @@ if (${QT_MOC_PATH} STREQUAL QT_MOC_PATH-NOTFOUND)
 endif ()
 
 if (WIN32)
-    find_package(Qt5Core REQUIRED)
-    find_package(Qt5Widgets REQUIRED)
-    find_package(Qt5Gui REQUIRED)
-    find_package(Qt5Opengl REQUIRED)
-
+    find_package(Qt5 COMPONENTS Core Widgets Gui Opengl REQUIRED)
     include_directories(${Qt5Core_INCLUDE_DIRS})
     include_directories(${Qt5Gui_INCLUDE_DIRS})
     include_directories(${Qt5Opengl_INCLUDE_DIRS})
