@@ -105,7 +105,7 @@ void ModelImporter::processMesh(aiMesh* ai_mesh, size_t bone_index)
   }
   for (unsigned int i = 0; i < ai_mesh->mNumFaces; i++)
   {
-    aiFace face = ai_mesh->mFaces[i];
+    const auto& face = ai_mesh->mFaces[i];
     for (unsigned int j = 0; j < face.mNumIndices; j++)
       indices.push_back(face.mIndices[j]);
   }

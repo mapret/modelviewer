@@ -1,6 +1,9 @@
 uniform mat4 model;
 uniform mat4 proj_view;
-uniform mat4 bones[100];
+uniform mat4 bones[1022];
+//TODO: Assume 1024 mat4 are allowed
+//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGet.xhtml
+//Theoretical minimum is GL_MAX_VERTEX_UNIFORM_COMPONENTS (=1024) / 16 = 64
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
