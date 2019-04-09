@@ -72,7 +72,7 @@ mat4 Camera::getViewMatrix() const
 mat4 Camera::getProjectionMatrix() const
 {
   recalculate();
-  return mat4::perspective(fovy_, aspect_ratio_, 0.1f, 1000.f);
+  return mat4::perspective(fovy_, aspect_ratio_, 0.1f, 10000.f);
 }
 
 vec3 Camera::getViewDirection() const
