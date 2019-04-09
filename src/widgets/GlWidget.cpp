@@ -138,8 +138,8 @@ void GlWidget::resetCamera()
 void GlWidget::resetCameraZoom()
 {
   auto planes = camera_.getFrustumSidePlanes();
-  vec3 center;
-  size_t num_vertices = 0;
+  vec3 min(std::numeric_limits<float>::max()); //Min and max of bounding box
+  vec3 max(std::numeric_limits<float>::lowest());
   model_.forEachTriangle(model_.getTransformMatrices(transform_), [&](const vec3& p1, const vec3& p2, const vec3& p3)
   {
     for (auto& plane : planes)
@@ -148,13 +148,14 @@ void GlWidget::resetCameraZoom()
       if (plane.signedDistance(p2) > 0) plane.setDistanceFromOrigin(p2);
       if (plane.signedDistance(p3) > 0) plane.setDistanceFromOrigin(p3);
     }
-    center += p1;
-    center += p2;
-    center += p3;
-    num_vertices += 3;
+    min = vec3::min(min, p1);
+    min = vec3::min(min, p2);
+    min = vec3::min(min, p3);
+    max = vec3::max(max, p1);
+    max = vec3::max(max, p2);
+    max = vec3::max(max, p3);
   });
-  center /= num_vertices;
-  camera_.setFrustumSidePlanes(planes, center);
+  camera_.setFrustumSidePlanes(planes, (min + max) / 2.f);
   repaint();
 }
 
