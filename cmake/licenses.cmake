@@ -9,7 +9,10 @@ set(licenses
     Glew   ${EXTERNAL_DIR}/glew/LICENSE.txt
 )
 
-foreach (val RANGE 1)
+list(LENGTH licenses num_licenses)
+math(EXPR num_licenses "${num_licenses} / 2 - 1")
+
+foreach (val RANGE ${num_licenses})
   math(EXPR index1 "${val} * 2")
   math(EXPR index2 "${val} * 2 + 1")
   list(GET licenses ${index1} name)
