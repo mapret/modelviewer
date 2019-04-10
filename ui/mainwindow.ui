@@ -149,7 +149,14 @@
     <addaction name="separator"/>
     <addaction name="act_exit"/>
    </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="act_licenses"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuHelp"/>
   </widget>
   <action name="act_open">
    <property name="text">
@@ -159,6 +166,11 @@
   <action name="act_exit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="act_licenses">
+   <property name="text">
+    <string>Licenses</string>
    </property>
   </action>
  </widget>

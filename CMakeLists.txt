@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(modelviewer)
 include(cmake/qt_functions.cmake)
 include(cmake/text2cpp.cmake)
+include(cmake/licenses.cmake)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 add_definitions(-DGLEW_STATIC)
@@ -49,7 +50,7 @@ qt_add_moc_files(moc_output ${moc_files})
 qt_add_uic_files(uic_output ${ui_files})
 addPlaintext(opengl_shader ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${glsl_SOURCES})
 
-add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader})
+add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${license_sources})
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 
