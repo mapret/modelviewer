@@ -154,6 +154,7 @@
      <string>Help</string>
     </property>
     <addaction name="act_licenses"/>
+    <addaction name="act_aboutqt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -171,6 +172,11 @@
   <action name="act_licenses">
    <property name="text">
     <string>Licenses</string>
+   </property>
+  </action>
+  <action name="act_aboutqt">
+   <property name="text">
+    <string>About Qt</string>
    </property>
   </action>
  </widget>

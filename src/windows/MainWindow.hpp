@@ -35,4 +35,5 @@ class MainWindow : public QMainWindow
     void resetAnimation();
     void setAnimationSpeed(double value);
     void showLicenses();
+    void showAboutQt();
 };

@@ -4,6 +4,7 @@
 #include "windows/LicenseDialog.hpp"
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
+#include <QtWidgets/QMessageBox>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -32,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
   QObject::connect(ui_->act_exit, SIGNAL(triggered(bool)), this, SLOT(exitAction()));
   QObject::connect(ui_->act_licenses, SIGNAL(triggered(bool)), this, SLOT(showLicenses()));
+  QObject::connect(ui_->act_aboutqt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
 }
 
 MainWindow::~MainWindow()
@@ -107,4 +109,9 @@ void MainWindow::setAnimationSpeed(double value)
 void MainWindow::showLicenses()
 {
   LicenseDialog(this).exec();
+}
+
+void MainWindow::showAboutQt()
+{
+  QMessageBox::aboutQt(this, "About Qt");
 }
