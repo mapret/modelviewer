@@ -1,3 +1,4 @@
+#include "Globals.hpp"
 #include "MainWindow.hpp"
 #include "ui/mainwindow.ui.h"
 #include "widgets/GlWidget.hpp"
@@ -113,5 +114,5 @@ void MainWindow::showLicenses()
 
 void MainWindow::showAboutQt()
 {
-  QMessageBox::aboutQt(this, "About Qt");
+  QMessageBox::aboutQt(this, "About Qt - " + qglobals::APPLICATION_NAME);
 }
