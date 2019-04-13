@@ -1,7 +1,7 @@
 uniform mat4 model;
 uniform mat4 proj_view;
-uniform mat4 bones[1022];
-//TODO: Assume 1024 mat4 are allowed
+uniform mat4 bones[254];
+//TODO: Only 256 mat4 are allowed on Win10 (1024 on Linux), need to to something about that
 //https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGet.xhtml
 //Theoretical minimum is GL_MAX_VERTEX_UNIFORM_COMPONENTS (=1024) / 16 = 64
 
