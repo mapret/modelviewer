@@ -5,7 +5,7 @@ include(cmake/text2cpp.cmake)
 set(EXTERNAL_DIR ${CMAKE_CURRENT_LIST_DIR}/../external)
 
 set(licenses
-    Assimp ${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp/LICENSE
+    Assimp ${EXTERNAL_DIR}/assimp/LICENSE
     Glew   ${EXTERNAL_DIR}/glew/LICENSE.txt
 )
 

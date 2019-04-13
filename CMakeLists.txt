@@ -5,27 +5,33 @@ include(cmake/text2cpp.cmake)
 include(cmake/licenses.cmake)
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
+get_filename_component(PROJECT_DIR "." ABSOLUTE)
+set(SOURCE_DIR   "${PROJECT_DIR}/src")
+set(UI_DIR       "${PROJECT_DIR}/ui")
+set(EXTERNAL_DIR "${PROJECT_DIR}/external")
+set(LPREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
+set(LSUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
+set(CMAKE_CXX_STANDARD 17)
+
 add_definitions(-DGLEW_STATIC)
 add_subdirectory(external/glew)
-include_directories(external/glew/include)
+include_directories(${EXTERNAL_DIR}/glew/include)
 
-include_directories(external/stb/include)
+include_directories(${EXTERNAL_DIR}/stb/include)
 
-ExternalProject_Add(assimp
-    DOWNLOAD_DIR ${CMAKE_CURRENT_LIST_DIR}/external/download
+ExternalProject_Add(
+    assimp
+    DOWNLOAD_DIR ${EXTERNAL_DIR}/download
     DOWNLOAD_NAME assimp-4.1.0.zip
+    SOURCE_DIR ${EXTERNAL_DIR}/assimp
     URL https://github.com/assimp/assimp/archive/v4.1.0.zip
     URL_HASH SHA256=407BE74F44F488FCF1AAC3492D962452DDDE89561906E917A208C75E1192BCDC
-    CMAKE_ARGS -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DCMAKE_BUILD_TYPE=Release -DASSIMP_LIB_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp -DASSIMP_BIN_INSTALL_DIR=${CMAKE_BINARY_DIR} -DASSIMP_INCLUDE_INSTALL_DIR=${CMAKE_CURRENT_LIST_DIR}/external/assimp/include
+    CMAKE_ARGS ${ASSIMP_STATIC} -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
+    INSTALL_COMMAND ""
 )
-include_directories(external/assimp/include)
-find_library(libassimp NAMES assimp assimp-vc140-mt HINTS ${CMAKE_CURRENT_LIST_DIR}/external/assimp)
-
-
-get_filename_component(PROJECT_DIR "." ABSOLUTE)
-set(SOURCE_DIR "${PROJECT_DIR}/src")
-set(UI_DIR "${PROJECT_DIR}/ui")
-set(CMAKE_CXX_STANDARD 17)
+list(APPEND LIBS ${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/code/${LPREFIX}assimp${LSUFFIX})
+include_directories(${EXTERNAL_DIR}/assimp/include)
+include_directories(${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/include)
 
 if (MSVC)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -58,11 +64,6 @@ if (UNIX)
     include_directories(/usr/include/qt) #TODO: Find a better way to do this
 endif()
 
-if (libassimp)
-    set(LIBS ${libassimp})
-else ()
-    message(AUTHOR_WARNING "You need to rerun cmake after building assimp (TODO: Fix this)")
-endif ()
 if (MINGW)
     list(APPEND LIBS stdc++fs)
 endif()
