@@ -19,11 +19,16 @@ foreach (val RANGE ${num_licenses})
   list(GET licenses ${index2} path)
   set(output_name ${CMAKE_BINARY_DIR}/licenses/${name})
   if (EXISTS ${path})
-    file(READ ${path} license)
-    file(WRITE ${output_name} "${name}\n")
-    file(APPEND ${output_name} "${license}")
+    list(APPEND copy_command COMMAND ${CMAKE_COMMAND} ARGS -E copy ${path} ${output_name})
+    list(APPEND license_sources ${path})
+    list(APPEND license_list ${output_name})
   endif ()
 endforeach()
+add_custom_command(
+    OUTPUT ${license_list}
+    ${copy_command}
+    DEPENDS ${license_sources}
+    COMMENT "Copying licenses"
+)
 
-file(GLOB licenses "${CMAKE_BINARY_DIR}/licenses/*")
-addPlaintext(license_sources ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${licenses})
+addPlaintext(license_sources ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${license_list})

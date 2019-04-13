@@ -7,10 +7,9 @@ namespace
 {
   const char* LICENSES[] =
   {
-    plaintext::Glew,
-    plaintext::Assimp,
+    "Glew",   plaintext::Glew,
+    "Assimp", plaintext::Assimp,
   };
-  std::vector<size_t> text_offsets;
 }
 
 LicenseDialog::LicenseDialog(QWidget* parent)
@@ -20,13 +19,9 @@ LicenseDialog::LicenseDialog(QWidget* parent)
   ui_->setupUi(this);
 
   std::string s;
-  for (const auto& license : LICENSES)
+  for (size_t i = 0; i < std::size(LICENSES); i += 2)
   {
-    size_t name_lenghth = 0;
-    while (license[name_lenghth] != '\n')
-      name_lenghth++;
-    text_offsets.push_back(name_lenghth);
-    ui_->lst_names->addItem(QString::fromUtf8(license, (int)name_lenghth));
+    ui_->lst_names->addItem(QString::fromUtf8(LICENSES[i]));
   }
 
   QObject::connect(ui_->lst_names, SIGNAL(currentRowChanged(int)), this, SLOT(itemSelected(int)));
@@ -39,5 +34,5 @@ LicenseDialog::~LicenseDialog()
 
 void LicenseDialog::itemSelected(int index)
 {
-  ui_->txt_text->setPlainText(QString::fromUtf8(LICENSES[index] + text_offsets[index] + 1));
+  ui_->txt_text->setPlainText(QString::fromUtf8(LICENSES[index * 2 + 1]));
 }
