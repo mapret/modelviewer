@@ -40,11 +40,6 @@
      </item>
      <item>
       <widget class="QPlainTextEdit" name="txt_text">
-       <property name="font">
-        <font>
-         <family>Monospace</family>
-        </font>
-       </property>
        <property name="lineWrapMode">
         <enum>QPlainTextEdit::NoWrap</enum>
        </property>
