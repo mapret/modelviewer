@@ -36,9 +36,6 @@ include_directories(${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/include)
 if (MSVC)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 endif ()
-if (UNIX)
-    set(CMAKE_CXX_FLAGS "-fPIC")
-endif ()
 
 file(GLOB_RECURSE ui_files RELATIVE "${UI_DIR}" "${UI_DIR}/*.ui")
 file(GLOB_RECURSE moc_files RELATIVE "${SOURCE_DIR}" "${SOURCE_DIR}/*.hpp")
@@ -60,16 +57,9 @@ add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 
-if (UNIX)
-    include_directories(/usr/include/qt) #TODO: Find a better way to do this
-endif()
-
-if (MINGW)
+list(APPEND LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::OpenGL)
+list(APPEND LIBS glew)
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")  # gcc and MinGW
     list(APPEND LIBS stdc++fs)
-endif()
-if (WIN32)
-    list(APPEND LIBS Qt5::Core Qt5::Gui Qt5::Widgets Qt5::OpenGL glew)
-else()
-    list(APPEND LIBS Qt5Core Qt5Gui Qt5Widgets Qt5OpenGL GL glew stdc++fs)
 endif()
 target_link_libraries(${PROJECT_NAME} ${LIBS})
