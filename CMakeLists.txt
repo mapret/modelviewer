@@ -29,7 +29,12 @@ ExternalProject_Add(
     CMAKE_ARGS ${ASSIMP_STATIC} -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
     INSTALL_COMMAND ""
 )
-list(APPEND LIBS ${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/code/${LPREFIX}assimp${LSUFFIX})
+set(assimp_name assimp)
+if (MSVC)
+    set(assimp_name $<CONFIGURATION>/assimp-vc140-mt)
+    set(LSUFFIX .lib) #TODO: Better way to do this?
+endif ()
+list(APPEND LIBS ${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/code/${LPREFIX}${assimp_name}${LSUFFIX})
 include_directories(${EXTERNAL_DIR}/assimp/include)
 include_directories(${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/include)
 
