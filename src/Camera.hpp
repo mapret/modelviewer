@@ -29,6 +29,7 @@ class Camera
     void mouseWheelEvent(int delta);
 
   private:
+    void zoomAction(float radius_multiplier);
     void recalculate() const;
 
     vec3 center_;

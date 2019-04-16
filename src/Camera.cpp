@@ -145,6 +145,11 @@ void Camera::mouseMoveEvent(const MouseEvent& event)
       dp_norm.normalize();
     center_ -= side * dp_norm.x * distance - camera_up_ * dp_norm.y * distance;
   }
+  else if (event.buttons & MouseEvent::Buttons::Right && dp.y != 0)
+  {
+    constexpr static float DRAG_ZOOM_FACTOR = 0.008f;
+    zoomAction(1.f + DRAG_ZOOM_FACTOR * dp.y);
+  }
 
   previous_mouse_position_ = event.position;
   dirty_bit_ = true;
@@ -152,13 +157,17 @@ void Camera::mouseMoveEvent(const MouseEvent& event)
 
 void Camera::mouseWheelEvent(const int delta)
 {
-  constexpr static float ZOOM_FACTOR = 1.2f;
+  constexpr static float WHEEL_ZOOM_FACTOR = 1.2f;
+  zoomAction(delta < 0 ? WHEEL_ZOOM_FACTOR : 1.f / WHEEL_ZOOM_FACTOR);
+}
+
+void Camera::zoomAction(float radius_multiplier)
+{
   constexpr static float MIN_ZOOM = 0.01f;
 
-  radius_ *= delta < 0 ? ZOOM_FACTOR : 1.f / ZOOM_FACTOR;
+  radius_ *= radius_multiplier;
   if (radius_ < MIN_ZOOM)
-    radius_ *= ZOOM_FACTOR;
-
+    radius_ /= radius_multiplier;
   dirty_bit_ = true;
 }
 
