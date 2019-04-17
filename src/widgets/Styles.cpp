@@ -1,5 +1,6 @@
 #include "Styles.hpp"
 #include <QtCore/QFile>
+#include <QtCore/QSettings>
 #include <QtCore/QTextStream>
 #include <QtWidgets/QApplication>
 
@@ -19,6 +20,7 @@ Styles::Styles()
     names_.push_back(style.first);
     name_mapping_[style.first] = style.second;
   }
+  loadSettings();
 }
 
 const std::vector<std::string>& Styles::getNames() const
@@ -28,9 +30,11 @@ const std::vector<std::string>& Styles::getNames() const
 
 bool Styles::setStyle(const std::string& name)
 {
+  current_theme_ = name;
   if (name == "Default")
   {
     qApp->setStyleSheet("");
+    saveSettings();
     return true;
   }
 
@@ -42,5 +46,19 @@ bool Styles::setStyle(const std::string& name)
   f.open(QFile::ReadOnly | QFile::Text);
   QTextStream stylesheet(&f);
   qApp->setStyleSheet(stylesheet.readAll());
+  saveSettings();
   return true;
+}
+
+void Styles::saveSettings()
+{
+  QSettings settings;
+  settings.setValue("current_style", QString::fromStdString(current_theme_));
+}
+
+void Styles::loadSettings()
+{
+  QSettings settings;
+  auto style = settings.value("current_style", "Default").toString().toStdString();
+  setStyle(style);
 }

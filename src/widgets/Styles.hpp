@@ -15,4 +15,8 @@ class Styles
   private:
     std::vector<std::string> names_;
     std::map<std::string, std::string> name_mapping_;
+    std::string current_theme_;
+
+    void saveSettings();
+    void loadSettings();
 };
