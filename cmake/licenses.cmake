@@ -5,8 +5,9 @@ include(cmake/text2cpp.cmake)
 set(EXTERNAL_DIR ${CMAKE_CURRENT_LIST_DIR}/../external)
 
 set(licenses
-    Assimp ${EXTERNAL_DIR}/assimp/LICENSE
-    Glew   ${EXTERNAL_DIR}/glew/LICENSE.txt
+    Assimp          ${EXTERNAL_DIR}/assimp/LICENSE
+    Glew            ${EXTERNAL_DIR}/glew/LICENSE.txt
+    QDarkStyleSheet ${EXTERNAL_DIR}/qdarkstyle/LICENSE.md
 )
 
 list(LENGTH licenses num_licenses)

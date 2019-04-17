@@ -7,8 +7,9 @@ namespace
 {
   const char* LICENSES[] =
   {
-    "Glew",   plaintext::Glew,
-    "Assimp", plaintext::Assimp,
+    "Glew",            plaintext::Glew,
+    "Assimp",          plaintext::Assimp,
+    "QDarkStyleSheet", plaintext::QDarkStyleSheet,
   };
 }
 

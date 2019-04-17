@@ -23,6 +23,15 @@ MainWindow::MainWindow(QWidget *parent)
   restoreGeometry(settings.value("mainWindowGeometry").toByteArray());
   restoreState(settings.value("mainWindowState").toByteArray());
 
+  for (const auto& style : styles_.getNames())
+  {
+    QAction* action = new QAction(QString::fromStdString(style), ui_->menu_style);
+    ui_->menu_style->addAction(action);
+    QObject::connect(action, &QAction::triggered, this, [=](){
+      styles_.setStyle(style);
+    });
+  }
+
   QObject::connect(gl_widget_, SIGNAL(fileLoaded()), this, SLOT(fileLoaded()));
   QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
   QObject::connect(ui_->btn_reset_camera, SIGNAL(pressed()), this, SLOT(resetCamera()));

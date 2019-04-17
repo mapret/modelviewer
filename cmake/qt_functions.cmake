@@ -42,3 +42,19 @@ function (qt_add_uic_files output_var)
     endforeach ()
     SET(${output_var} "${uic_output}" PARENT_SCOPE)
 endfunction()
+
+function (qt_add_rcc_file output_var qrcfile)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/rcc)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h
+                       COMMAND ${QT_RCC_PATH} -o ${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h ${qrcfile}
+                       DEPENDS ${qrcfile})
+    SET(${output_var} "${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h" PARENT_SCOPE)
+endfunction()
+
+function (qt_add_rcc_file output_var qrcfile depends_on)
+    file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/include/rcc)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h
+                       COMMAND ${QT_RCC_PATH} -o ${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h ${qrcfile}
+                       DEPENDS ${qrcfile} ${depends_on})
+    SET(${output_var} "${CMAKE_CURRENT_BINARY_DIR}/include/rcc/${output_var}.h" PARENT_SCOPE)
+endfunction()

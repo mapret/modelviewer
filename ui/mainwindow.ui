@@ -168,7 +168,19 @@
     <addaction name="act_licenses"/>
     <addaction name="act_aboutqt"/>
    </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <widget class="QMenu" name="menu_style">
+     <property name="title">
+      <string>Style</string>
+     </property>
+    </widget>
+    <addaction name="menu_style"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <action name="act_open">

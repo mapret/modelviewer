@@ -1,5 +1,6 @@
 #pragma once
 
+#include "widgets/Styles.hpp"
 #include <memory>
 #include <QtWidgets/QMainWindow>
 
@@ -20,6 +21,7 @@ class MainWindow : public QMainWindow
     void closeEvent(QCloseEvent* event) override;
 
   private:
+    Styles styles_;
     std::unique_ptr<Ui::MainWindow> ui_;
     GlWidget* gl_widget_;
 

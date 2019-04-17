@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
 project(modelviewer)
-include(cmake/qt_functions.cmake)
-include(cmake/text2cpp.cmake)
-include(cmake/licenses.cmake)
-include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 get_filename_component(PROJECT_DIR "." ABSOLUTE)
 set(SOURCE_DIR   "${PROJECT_DIR}/src")
@@ -13,30 +9,10 @@ set(LPREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
 set(LSUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
 set(CMAKE_CXX_STANDARD 17)
 
-add_definitions(-DGLEW_STATIC)
-add_subdirectory(external/glew)
-include_directories(${EXTERNAL_DIR}/glew/include)
-
-include_directories(${EXTERNAL_DIR}/stb/include)
-
-ExternalProject_Add(
-    assimp
-    DOWNLOAD_DIR ${EXTERNAL_DIR}/download
-    DOWNLOAD_NAME assimp-4.1.0.zip
-    SOURCE_DIR ${EXTERNAL_DIR}/assimp
-    URL https://github.com/assimp/assimp/archive/v4.1.0.zip
-    URL_HASH SHA256=407BE74F44F488FCF1AAC3492D962452DDDE89561906E917A208C75E1192BCDC
-    CMAKE_ARGS ${ASSIMP_STATIC} -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
-    INSTALL_COMMAND ""
-)
-set(assimp_name assimp)
-if (MSVC)
-    set(assimp_name $<CONFIGURATION>/assimp-vc140-mt)
-    set(LSUFFIX .lib) #TODO: Better way to do this?
-endif ()
-list(APPEND LIBS ${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/code/${LPREFIX}${assimp_name}${LSUFFIX})
-include_directories(${EXTERNAL_DIR}/assimp/include)
-include_directories(${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/include)
+include(cmake/qt_functions.cmake)
+include(cmake/text2cpp.cmake)
+include(cmake/dependencies.cmake)
+include(cmake/licenses.cmake)
 
 if (MSVC)
     set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -58,7 +34,7 @@ qt_add_moc_files(moc_output ${moc_files})
 qt_add_uic_files(uic_output ${ui_files})
 addPlaintext(opengl_shader ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${glsl_SOURCES})
 
-add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${license_sources})
+add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${qdarkstyle} ${license_sources})
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 
