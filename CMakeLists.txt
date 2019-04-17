@@ -34,7 +34,7 @@ qt_add_moc_files(moc_output ${moc_files})
 qt_add_uic_files(uic_output ${ui_files})
 addPlaintext(opengl_shader ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${glsl_SOURCES})
 
-add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${qdarkstyle} ${license_sources})
+add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${qdarkstyle_src} ${license_sources})
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 

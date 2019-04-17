@@ -19,13 +19,11 @@ This project is built using [CMake](https://cmake.org/).
 
 ### Example
 
-To build the project with the default CMake generator, use the following commands (calling the CMake configuration step two times is necessary due to limitations of the current project setup):
+To build the project with the default CMake generator, use the following commands:
 ```
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build .
-cmake .
 cmake --build .
 ```
 

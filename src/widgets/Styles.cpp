@@ -4,7 +4,7 @@
 #include <QtCore/QTextStream>
 #include <QtWidgets/QApplication>
 
-#include "rcc/qdarkstyle.h"
+#include "rcc/qdarkstyle_src.h"
 
 
 Styles::Styles()
