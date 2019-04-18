@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 project(modelviewer)
 
+if (POLICY CMP0069)
+    cmake_policy(SET CMP0069 NEW)
+endif()
+
 get_filename_component(PROJECT_DIR "." ABSOLUTE)
 set(SOURCE_DIR   "${PROJECT_DIR}/src")
 set(UI_DIR       "${PROJECT_DIR}/ui")
@@ -8,6 +12,10 @@ set(EXTERNAL_DIR "${PROJECT_DIR}/external")
 set(LPREFIX ${CMAKE_SHARED_LIBRARY_PREFIX})
 set(LSUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
 set(CMAKE_CXX_STANDARD 17)
+if (${CMAKE_BUILD_TYPE} STREQUAL "MinSizeRel")
+    set(STATIC_BUILD 1)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION 1)
+endif ()
 
 include(cmake/qt_functions.cmake)
 include(cmake/text2cpp.cmake)
