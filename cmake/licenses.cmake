@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-include(cmake/text2cpp.cmake)
+include(cmake/binary2cpp.cmake)
 
 
 set(EXTERNAL_DIR ${CMAKE_CURRENT_LIST_DIR}/../external)
@@ -34,4 +34,5 @@ add_custom_command(
     COMMENT "Copying licenses"
 )
 
-addPlaintext(license_sources ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${license_list})
+# MSVC only allows strings up to 16KB, use addBinary instead of addPlaintext (some licenses are larger than 16KB)
+addBinary(license_sources ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${license_list})
