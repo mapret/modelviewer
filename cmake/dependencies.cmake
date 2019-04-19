@@ -22,7 +22,10 @@ include_directories(${EXTERNAL_DIR}/stb/include)
 if (STATIC_BUILD)
   set(LPREFIX ${CMAKE_STATIC_LIBRARY_PREFIX})
   set(LSUFFIX ${CMAKE_STATIC_LIBRARY_SUFFIX})
-  set(assimp_static -DBUILD_SHARED_LIBS=0)
+  set(assimp_static -DBUILD_SHARED_LIBS=0 -DCMAKE_CXX_FLAGS=-w -DCMAKE_C_FLAGS=-w)
+else()
+  #LTO does not work with mingw and static build (because of libstdc++fs ?), assimp dll works though
+  set(assimp_static -DCMAKE_CXX_FLAGS=-flto\ -w -DCMAKE_C_FLAGS=-flto\ -w)
 endif()
 ExternalProject_Add(
     assimp
@@ -32,7 +35,7 @@ ExternalProject_Add(
     URL https://github.com/assimp/assimp/archive/v4.1.0.zip
     URL_HASH SHA256=407BE74F44F488FCF1AAC3492D962452DDDE89561906E917A208C75E1192BCDC
     PATCH_COMMAND ${CMAKE_COMMAND} -Dpatch_assimp=1 -DEXTERNAL_DIR=${EXTERNAL_DIR} -P ${CMAKE_CURRENT_LIST_FILE}
-    CMAKE_ARGS ${assimp_static} -DCMAKE_CXX_FLAGS=-flto\ -w -DCMAKE_C_FLAGS=-flto\ -w -DASSIMP_BUILD_IFC_IMPORTER=0 -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
+    CMAKE_ARGS ${assimp_static} -DASSIMP_BUILD_IFC_IMPORTER=0 -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
     INSTALL_COMMAND ""
 )
 set(assimp_name assimp)
