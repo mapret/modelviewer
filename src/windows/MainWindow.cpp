@@ -2,6 +2,7 @@
 #include "MainWindow.hpp"
 #include "ui/mainwindow.ui.h"
 #include "widgets/GlWidget.hpp"
+#include "windows/AboutDialog.hpp"
 #include "windows/LicenseDialog.hpp"
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
@@ -13,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui_(new Ui::MainWindow)
 {
   ui_->setupUi(this);
+  setWindowTitle(qglobals::APPLICATION_NAME);
+  ui_->act_about->setText("About " + qglobals::APPLICATION_NAME);
 
   //Replace placeholder button by GlWidget
   gl_widget_ = new GlWidget(this);
@@ -43,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
   QObject::connect(ui_->act_exit, SIGNAL(triggered(bool)), this, SLOT(exitAction()));
   QObject::connect(ui_->act_licenses, SIGNAL(triggered(bool)), this, SLOT(showLicenses()));
+  QObject::connect(ui_->act_about, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
   QObject::connect(ui_->act_aboutqt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
 }
 
@@ -119,6 +123,11 @@ void MainWindow::setAnimationSpeed(double value)
 void MainWindow::showLicenses()
 {
   LicenseDialog(this).exec();
+}
+
+void MainWindow::showAbout()
+{
+  AboutDialog(this).exec();
 }
 
 void MainWindow::showAboutQt()

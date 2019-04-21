@@ -166,6 +166,7 @@
      <string>Help</string>
     </property>
     <addaction name="act_licenses"/>
+    <addaction name="act_about"/>
     <addaction name="act_aboutqt"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -201,6 +202,11 @@
   <action name="act_aboutqt">
    <property name="text">
     <string>About Qt</string>
+   </property>
+  </action>
+  <action name="act_about">
+   <property name="text">
+    <string>About</string>
    </property>
   </action>
  </widget>

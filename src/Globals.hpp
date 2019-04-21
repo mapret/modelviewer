@@ -11,5 +11,6 @@
 add_property(ORGANISATION_NAME)
 add_property(APPLICATION_NAME)
 add_property(SHORT_DESCRIPTION)
+add_property(LICENSE_NOTICE)
 
 #undef add_property
