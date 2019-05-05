@@ -1,6 +1,5 @@
 #include "AboutDialog.hpp"
 #include "Globals.hpp"
-#include "plaintext/license_text.gen.hpp"
 #include "ui/about.ui.h"
 #include <QtCore/QDate>
 #include <QtWidgets/QStyle>
@@ -17,7 +16,7 @@ AboutDialog::AboutDialog(QWidget* parent)
   if (current_year != "2019")
     license_notice.replace("2019", "2019-" + current_year);
 
-  setWindowTitle("About" + qglobals::APPLICATION_NAME);
+  setWindowTitle("About " + qglobals::APPLICATION_NAME);
   ui_->lbl_about->setText("About " + qglobals::APPLICATION_NAME);
   ui_->lbl_license->setText(license_notice);
 }
