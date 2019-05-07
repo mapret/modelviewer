@@ -23,7 +23,7 @@ To build the project with the default CMake generator, use the following command
 ```
 mkdir build
 cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
+cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
 cmake --build .
 ```
 
