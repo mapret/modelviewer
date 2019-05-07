@@ -14,6 +14,7 @@ endif ()
 include(${CMAKE_ROOT}/Modules/ExternalProject.cmake)
 
 add_definitions(-DGLEW_STATIC)
+add_definitions(-DGLEW_NO_GLU)
 add_subdirectory(external/glew)
 include_directories(${EXTERNAL_DIR}/glew/include)
 
