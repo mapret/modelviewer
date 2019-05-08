@@ -1,4 +1,4 @@
-image: mapret/cppimage:v1
+image: mapret/cmake-qt5:latest
 
 stages:
   - build
@@ -6,7 +6,6 @@ stages:
 build:
   stage: build
   script:
-   - apk add qt5-qtbase-dev
    - mkdir build && cd build
    - cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
    - cmake --build .
