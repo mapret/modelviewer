@@ -15,19 +15,16 @@
 
 bool ModelImporter::import(const std::filesystem::path& path, Model& model)
 {
-  ModelImporter importer;
-  return importer.importImpl(path, model);
-}
-
-bool ModelImporter::importImpl(const std::filesystem::path& path, Model& model)
-{
   model_ = &model;
   directory_ = path.parent_path();
 
   Assimp::Importer importer;
   scene_ = importer.ReadFile(path.string(), aiProcess_FlipUVs | aiProcessPreset_TargetRealtime_MaxQuality);
   if (!scene_ || scene_->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene_->mRootNode)
+  {
+    error_message_ = importer.GetErrorString();
     return false;
+  }
 
   size_t index = 0;
   processNode(scene_->mRootNode, index);
@@ -36,6 +33,11 @@ bool ModelImporter::importImpl(const std::filesystem::path& path, Model& model)
     processAnimation(scene_->mAnimations[i]);
 
   return true;
+}
+
+const std::string& ModelImporter::getErrorMessage() const
+{
+  return error_message_;
 }
 
 void ModelImporter::processNode(aiNode* node, size_t& index)

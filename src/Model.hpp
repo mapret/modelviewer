@@ -12,8 +12,6 @@ class Camera;
 class Model
 {
   public:
-    bool import(const std::filesystem::path& path);
-
     void addBone(Bone&& bone);
     void addMesh(Mesh&& mesh);
     void addAnimation(Animation&& animation);

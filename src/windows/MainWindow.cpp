@@ -84,6 +84,13 @@ void MainWindow::fileLoaded()
     ui_->lst_animations->addItem(QString::fromStdString(animation_name));
 }
 
+void MainWindow::fileLoadError(QString path, QString message)
+{
+  QFileInfo fileinfo(path);
+  QString filename = fileinfo.fileName();
+  QMessageBox::critical(this, "Failed to open \"" + filename + "\"", "The file \"" + filename + "\" could not be opened.\n\n" + message);
+}
+
 void MainWindow::setWireframeVisible(bool value)
 {
   emit gl_widget_->setWireframeVisible(value);

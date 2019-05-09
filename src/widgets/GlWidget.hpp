@@ -58,4 +58,5 @@ class GlWidget : public QGLWidget
 
   signals:
     void fileLoaded();
+    void fileLoadError(QString path, QString message);
 };

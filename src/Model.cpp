@@ -5,11 +5,6 @@
 #include <cassert>
 
 
-bool Model::import(const std::filesystem::path& path)
-{
-  return ModelImporter::import(path, *this);
-}
-
 void Model::addBone(Bone&& bone)
 {
   bone_names_[bone.getName()] = bones_.size();

@@ -29,6 +29,7 @@ class MainWindow : public QMainWindow
     void openFileModal();
     void exitAction();
     void fileLoaded();
+    void fileLoadError(QString path, QString message);
     void setWireframeVisible(bool value);
     void resetCamera();
     void resetCameraZoom();

@@ -1,5 +1,6 @@
 #include "gl_tools/GL.hpp" //Must be included before other OpenGL includes
 #include "GlWidget.hpp"
+#include "ModelImporter.hpp"
 #include "MouseEvent.hpp"
 #include "Renderer.hpp"
 #include "windows/MainWindow.hpp"
@@ -27,6 +28,7 @@ GlWidget::GlWidget(MainWindow* main_window)
 {
   update_timer_.setInterval(1000 / 60);
   QObject::connect(&update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
+  QObject::connect(this, SIGNAL(fileLoadError(QString, QString)), main_window_, SLOT(fileLoadError(QString, QString)), Qt::QueuedConnection);
 }
 
 GlWidget::~GlWidget()
@@ -74,9 +76,14 @@ void GlWidget::resizeGL(int w, int h)
 
 void GlWidget::loadFile(QString path)
 {
-  model_ = Model();
-  if (!model_.import(path.toStdString()))
-    throw std::runtime_error("Failed to import \"" + path.toStdString() + "\"");
+  Model new_model;
+  ModelImporter importer;
+  if (!importer.import(path.toStdString(), new_model))
+  {
+    emit fileLoadError(path, QString::fromStdString(importer.getErrorMessage()));
+    return;
+  }
+  model_ = std::move(new_model);
   transform_.setNumberOfBones(model_.getBoneCount());
   last_update_time_ = Clock::now();
   resetCameraZoom();
