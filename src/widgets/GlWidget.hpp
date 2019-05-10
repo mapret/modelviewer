@@ -57,6 +57,6 @@ class GlWidget : public QGLWidget
     void onUpdate();
 
   signals:
-    void fileLoaded();
+    void fileLoaded(QString path);
     void fileLoadError(QString path, QString message);
 };

@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow
   private slots:
     void openFileModal();
     void exitAction();
-    void fileLoaded();
+    void fileLoaded(QString path);
     void fileLoadError(QString path, QString message);
     void setWireframeVisible(bool value);
     void resetCamera();

@@ -87,7 +87,7 @@ void GlWidget::loadFile(QString path)
   transform_.setNumberOfBones(model_.getBoneCount());
   last_update_time_ = Clock::now();
   resetCameraZoom();
-  emit fileLoaded();
+  emit fileLoaded(path);
 }
 
 void GlWidget::playAnimation(QString name)

@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
     });
   }
 
-  QObject::connect(gl_widget_, SIGNAL(fileLoaded()), this, SLOT(fileLoaded()));
+  QObject::connect(gl_widget_, SIGNAL(fileLoaded(QString)), this, SLOT(fileLoaded(QString)));
   QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
   QObject::connect(ui_->btn_reset_camera, SIGNAL(pressed()), this, SLOT(resetCamera()));
   QObject::connect(ui_->btn_reset_zoom, SIGNAL(pressed()), this, SLOT(resetCameraZoom()));
@@ -76,8 +76,10 @@ void MainWindow::exitAction()
   QApplication::closeAllWindows();
 }
 
-void MainWindow::fileLoaded()
+void MainWindow::fileLoaded(QString path)
 {
+  QFileInfo fileinfo(path);
+  setWindowTitle(fileinfo.fileName() + " - " + qglobals::APPLICATION_NAME);
   const auto& model = gl_widget_->getModel();
   ui_->lst_animations->clear();
   for (const auto& animation_name : model.getAnimationNames())
