@@ -2,6 +2,8 @@
 
 An application which can display many 3d file formats, developed in C++.
 
+![Main window](https://raw.githubusercontent.com/mapret/modelviewer/assets/mainwindow.png)
+
 ## Supported formats
 
 This application is based on the [Open Asset Import Library](https://github.com/assimp/assimp), and therefore supports many 3d formats, including FBX, 3DS, OBJ and BLEND.
