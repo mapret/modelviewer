@@ -63,6 +63,8 @@ ExternalProject_Add(
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
 )
+list(APPEND styles qdarkstyle)
+list(APPEND qrcfiles ${EXTERNAL_DIR}/qdarkstyle/qdarkstyle/style.qrc)
 
 ExternalProject_Add(
     breeze
@@ -75,5 +77,7 @@ ExternalProject_Add(
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
 )
+list(APPEND styles breeze)
+list(APPEND qrcfiles ${EXTERNAL_DIR}/breeze/breeze.qrc)
 
-qt_add_rcc_file(rcc_src "${EXTERNAL_DIR}/breeze/breeze.qrc;${EXTERNAL_DIR}/qdarkstyle/qdarkstyle/style.qrc" "breeze;qdarkstyle")
+qt_add_rcc_file(rcc_src "${qrcfiles}" "${styles}")
