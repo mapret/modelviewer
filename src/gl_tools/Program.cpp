@@ -74,29 +74,14 @@ namespace GL
     glUniform2fv(getNamedLocation(name), 1, reinterpret_cast<const float*>(&value));
   }
 
-  void Program::setVec2(const char* name, float x, float y) const
-  {
-    glUniform2f(getNamedLocation(name), x, y);
-  }
-
   void Program::setVec3(const char* name, const vec3& value) const
   {
     glUniform3fv(getNamedLocation(name), 1, reinterpret_cast<const float*>(&value));
   }
 
-  void Program::setVec3(const char* name, float x, float y, float z) const
-  {
-    glUniform3f(getNamedLocation(name), x, y, z);
-  }
-
   void Program::setVec4(const char* name, const vec4& value) const
   {
     glUniform4fv(getNamedLocation(name), 1, reinterpret_cast<const float*>(&value));
-  }
-
-  void Program::setVec4(const char* name, float x, float y, float z, float w) const
-  {
-    glUniform4f(getNamedLocation(name), x, y, z, w);
   }
 
   void Program::setMat3(const char* name, const mat3& mat) const
@@ -111,7 +96,8 @@ namespace GL
 
   void Program::setMat4(const char* name, const mat4* mat, size_t count) const
   {
-    glUniformMatrix4fv(getNamedLocation(name), static_cast<GLsizei> (count), GL_FALSE, mat[0].data());
+    if (count > 0)
+      glUniformMatrix4fv(getNamedLocation(name), static_cast<GLsizei>(count), GL_FALSE, mat[0].data());
   }
 
   bool Program::hasUniformLocation(const char* name) const

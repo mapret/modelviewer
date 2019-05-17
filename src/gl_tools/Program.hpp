@@ -26,14 +26,11 @@ namespace GL
       void setBool(const char* name, bool value) const;
       void setInt(const char* name, int value) const;
       void setFloat(const char* name, float value) const;
-      void setVec2(const char* name, const vec2 &value) const;
-      void setVec2(const char* name, float x, float y) const;
-      void setVec3(const char* name, const vec3 &value) const;
-      void setVec3(const char* name, float x, float y, float z) const;
-      void setVec4(const char* name, const vec4 &value) const;
-      void setVec4(const char* name, float x, float y, float z, float w) const;
-      void setMat3(const char* name, const mat3 &mat) const;
-      void setMat4(const char* name, const mat4 &mat) const;
+      void setVec2(const char* name, const vec2& value) const;
+      void setVec3(const char* name, const vec3& value) const;
+      void setVec4(const char* name, const vec4& value) const;
+      void setMat3(const char* name, const mat3& mat) const;
+      void setMat4(const char* name, const mat4& mat) const;
       void setMat4(const char* name, const mat4* mat, size_t count) const;
       bool hasUniformLocation(const char* name) const;
 
