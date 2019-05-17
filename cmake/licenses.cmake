@@ -9,6 +9,7 @@ set(licenses
     Assimp           assimp       ${EXTERNAL_DIR}/assimp/LICENSE
     Glew             glew         ${EXTERNAL_DIR}/glew/LICENSE.txt
     QDarkStyleSheet  qdarkstyle   ${EXTERNAL_DIR}/qdarkstyle/LICENSE.md
+    Breeze           breeze       ${EXTERNAL_DIR}/breeze/LICENSE.md
 )
 
 list(LENGTH licenses num_licenses)

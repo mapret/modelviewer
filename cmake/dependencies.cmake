@@ -63,4 +63,17 @@ ExternalProject_Add(
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
 )
-qt_add_rcc_file(qdarkstyle_src ${EXTERNAL_DIR}/qdarkstyle/qdarkstyle/style.qrc qdarkstyle)
+
+ExternalProject_Add(
+    breeze
+    DOWNLOAD_DIR ${EXTERNAL_DIR}/download
+    DOWNLOAD_NAME BreezeStyleSheets-2d595a956f8a5f493aa51139a470b768a6d82cce.zip
+    SOURCE_DIR ${EXTERNAL_DIR}/breeze
+    URL https://github.com/Alexhuszagh/BreezeStyleSheets/archive/2d595a956f8a5f493aa51139a470b768a6d82cce.zip
+    URL_HASH SHA256=ec0e460115ea30635e18bcac7288bb1e98b427518cb07239755c4ba8cb986f91
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+)
+
+qt_add_rcc_file(rcc_src "${EXTERNAL_DIR}/breeze/breeze.qrc;${EXTERNAL_DIR}/qdarkstyle/qdarkstyle/style.qrc" "breeze;qdarkstyle")

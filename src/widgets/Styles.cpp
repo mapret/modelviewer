@@ -4,7 +4,7 @@
 #include <QtCore/QTextStream>
 #include <QtWidgets/QApplication>
 
-#include "rcc/qdarkstyle_src.h"
+#include "rcc/rcc_src.h"
 
 
 Styles::Styles()
@@ -13,6 +13,8 @@ Styles::Styles()
   {
       {"Default",    ""},
       {"QDarkStyle", "qdarkstyle/style.qss"}, //https://github.com/ColinDuquesnoy/QDarkStyleSheet
+      {"Breeze",     "light.qss"},
+      {"BreezeDark", "dark.qss"},
   };
 
   for (const auto& style : styles)
