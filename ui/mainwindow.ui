@@ -165,6 +165,8 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="act_controls"/>
+    <addaction name="separator"/>
     <addaction name="act_licenses"/>
     <addaction name="act_about"/>
     <addaction name="act_aboutqt"/>
@@ -207,6 +209,11 @@
   <action name="act_about">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="act_controls">
+   <property name="text">
+    <string>Controls</string>
    </property>
   </action>
  </widget>

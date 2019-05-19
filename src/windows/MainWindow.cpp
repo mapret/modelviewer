@@ -3,6 +3,7 @@
 #include "ui/mainwindow.ui.h"
 #include "widgets/GlWidget.hpp"
 #include "windows/AboutDialog.hpp"
+#include "windows/ControlsDialog.hpp"
 #include "windows/LicenseDialog.hpp"
 #include <QtCore/QSettings>
 #include <QtWidgets/QFileDialog>
@@ -45,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
   QObject::connect(ui_->spn_animation_speed, SIGNAL(valueChanged(double)), this, SLOT(setAnimationSpeed(double)));
   QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
   QObject::connect(ui_->act_exit, SIGNAL(triggered(bool)), this, SLOT(exitAction()));
+  QObject::connect(ui_->act_controls, SIGNAL(triggered(bool)), this, SLOT(showControls()));
   QObject::connect(ui_->act_licenses, SIGNAL(triggered(bool)), this, SLOT(showLicenses()));
   QObject::connect(ui_->act_about, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
   QObject::connect(ui_->act_aboutqt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
@@ -127,6 +129,11 @@ void MainWindow::resetAnimation()
 void MainWindow::setAnimationSpeed(double value)
 {
   emit gl_widget_->setAnimationSpeed(static_cast<float>(value));
+}
+
+void MainWindow::showControls()
+{
+  ControlsDialog(this).exec();
 }
 
 void MainWindow::showLicenses()
