@@ -26,7 +26,7 @@ LicenseDialog::LicenseDialog(QWidget* parent)
     ui_->lst_names->addItem(QString::fromUtf8(LICENSES[i]));
   }
 
-  QObject::connect(ui_->lst_names, SIGNAL(currentRowChanged(int)), this, SLOT(itemSelected(int)));
+  QObject::connect(ui_->lst_names, &QListWidget::currentRowChanged, this, &LicenseDialog::itemSelected);
   ui_->txt_text->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
   ui_->txt_text->setMinimumWidth(ui_->txt_text->fontMetrics().width(' ') * 81 + QApplication::style()->pixelMetric(QStyle::PM_ScrollBarExtent));
 }

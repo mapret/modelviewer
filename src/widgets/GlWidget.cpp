@@ -27,8 +27,7 @@ GlWidget::GlWidget(MainWindow* main_window)
     update_timer_(main_window)
 {
   update_timer_.setInterval(1000 / 60);
-  QObject::connect(&update_timer_, SIGNAL(timeout()), this, SLOT(onUpdate()));
-  QObject::connect(this, SIGNAL(fileLoadError(QString, QString)), main_window_, SLOT(fileLoadError(QString, QString)), Qt::QueuedConnection);
+  QObject::connect(&update_timer_, &QTimer::timeout, this, &GlWidget::onUpdate);
 }
 
 GlWidget::~GlWidget()

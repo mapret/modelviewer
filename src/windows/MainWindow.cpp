@@ -36,20 +36,21 @@ MainWindow::MainWindow(QWidget *parent)
     });
   }
 
-  QObject::connect(gl_widget_, SIGNAL(fileLoaded(QString)), this, SLOT(fileLoaded(QString)));
-  QObject::connect(ui_->chk_wireframe, SIGNAL(toggled(bool)), this, SLOT(setWireframeVisible(bool)));
-  QObject::connect(ui_->btn_reset_camera, SIGNAL(pressed()), this, SLOT(resetCamera()));
-  QObject::connect(ui_->btn_reset_zoom, SIGNAL(pressed()), this, SLOT(resetCameraZoom()));
-  QObject::connect(ui_->lst_animations, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(startAnimation(QListWidgetItem*)));
-  QObject::connect(ui_->btn_toggle_play, SIGNAL(pressed()), this, SLOT(toggleAnimation()));
-  QObject::connect(ui_->btn_reset, SIGNAL(pressed()), this, SLOT(resetAnimation()));
-  QObject::connect(ui_->spn_animation_speed, SIGNAL(valueChanged(double)), this, SLOT(setAnimationSpeed(double)));
-  QObject::connect(ui_->act_open, SIGNAL(triggered(bool)), this, SLOT(openFileModal()));
-  QObject::connect(ui_->act_exit, SIGNAL(triggered(bool)), this, SLOT(exitAction()));
-  QObject::connect(ui_->act_controls, SIGNAL(triggered(bool)), this, SLOT(showControls()));
-  QObject::connect(ui_->act_licenses, SIGNAL(triggered(bool)), this, SLOT(showLicenses()));
-  QObject::connect(ui_->act_about, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
-  QObject::connect(ui_->act_aboutqt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
+  QObject::connect(gl_widget_, &GlWidget::fileLoaded, this, &MainWindow::fileLoaded);
+  QObject::connect(gl_widget_, &GlWidget::fileLoadError, this, &MainWindow::fileLoadError, Qt::QueuedConnection);
+  QObject::connect(ui_->chk_wireframe, &QCheckBox::toggled, this, &MainWindow::setWireframeVisible);
+  QObject::connect(ui_->btn_reset_camera, &QPushButton::pressed, this, &MainWindow::resetCamera);
+  QObject::connect(ui_->btn_reset_zoom, &QPushButton::pressed, this, &MainWindow::resetCameraZoom);
+  QObject::connect(ui_->lst_animations, &QListWidget::itemDoubleClicked, this, &MainWindow::startAnimation);
+  QObject::connect(ui_->btn_toggle_play, &QPushButton::pressed, this, &MainWindow::toggleAnimation);
+  QObject::connect(ui_->btn_reset, &QPushButton::pressed, this, &MainWindow::resetAnimation);
+  QObject::connect(ui_->spn_animation_speed, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &MainWindow::setAnimationSpeed);
+  QObject::connect(ui_->act_open, &QAction::triggered, this, &MainWindow::openFileModal);
+  QObject::connect(ui_->act_exit, &QAction::triggered, this, &MainWindow::exitAction);
+  QObject::connect(ui_->act_controls, &QAction::triggered, this, &MainWindow::showControls);
+  QObject::connect(ui_->act_licenses, &QAction::triggered, this, &MainWindow::showLicenses);
+  QObject::connect(ui_->act_about, &QAction::triggered, this, &MainWindow::showAbout);
+  QObject::connect(ui_->act_aboutqt, &QAction::triggered, this, &MainWindow::showAboutQt);
 }
 
 MainWindow::~MainWindow()
