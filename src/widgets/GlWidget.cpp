@@ -12,26 +12,29 @@
 
 namespace
 {
-  QGLFormat getOpenglFormat()
+  QSurfaceFormat getOpenglFormat()
   {
-    QGLFormat format;
+    QSurfaceFormat format;
     format.setVersion(4, 2);
-    format.setProfile(QGLFormat::CoreProfile);
+    format.setProfile(QSurfaceFormat::CoreProfile);
     return format;
   }
 }
 
 GlWidget::GlWidget(MainWindow* main_window)
-  : QGLWidget(getOpenglFormat()),
+  : QOpenGLWidget(main_window),
     main_window_(main_window),
     update_timer_(main_window)
 {
+  setFormat(getOpenglFormat());
   update_timer_.setInterval(1000 / 60);
   QObject::connect(&update_timer_, &QTimer::timeout, this, &GlWidget::onUpdate);
 }
 
 GlWidget::~GlWidget()
 {
+  //Crashes on Windows if not called (because destruction is done by another thread than creation?)
+  makeCurrent();
 }
 
 const Model& GlWidget::getModel() const
@@ -41,7 +44,7 @@ const Model& GlWidget::getModel() const
 
 void GlWidget::initializeGL()
 {
-  QGLWidget::initializeGL();
+  QOpenGLWidget::initializeGL();
   if (glewInit() != GLEW_OK)
     throw std::runtime_error("Failed to initialize GLEW");
   renderer_ = std::make_unique<Renderer>();
@@ -62,13 +65,13 @@ void GlWidget::onUpdate()
 
 void GlWidget::paintGL()
 {
-  QGLWidget::paintGL();
+  QOpenGLWidget::paintGL();
   renderer_->draw(model_, transform_, camera_);
 }
 
 void GlWidget::resizeGL(int w, int h)
 {
-  QGLWidget::resizeGL(w, h);
+  QOpenGLWidget::resizeGL(w, h);
   glViewport(0, 0, w, h);
   camera_.setWindowSize(vec2u(w, h));
 }

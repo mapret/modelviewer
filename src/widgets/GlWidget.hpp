@@ -6,14 +6,14 @@
 #include <chrono>
 #include <memory>
 #include <QtCore/QTimer>
-#include <QtOpenGL/QGLWidget>
+#include <QtWidgets/QOpenGLWidget>
 
 
 class MainWindow;
 class Renderer;
 using Clock = std::chrono::high_resolution_clock;
 
-class GlWidget : public QGLWidget
+class GlWidget : public QOpenGLWidget
 {
   Q_OBJECT
 
