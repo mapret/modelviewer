@@ -20,6 +20,7 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "MinSizeRel")
     list(APPEND LIBS -static-libstdc++)
     #LTO does not seem to work with MinGW (because of libstdc++fs ?)
     #set(CMAKE_INTERPROCEDURAL_OPTIMIZATION 1)
+    set(rc_src ${UI_DIR}/main.rc)
 endif ()
 
 include(cmake/qt_functions.cmake)
@@ -47,7 +48,7 @@ qt_add_moc_files(moc_output ${moc_files})
 qt_add_uic_files(uic_output ${ui_files})
 addPlaintext(opengl_shader ${CMAKE_CURRENT_BINARY_DIR}/include/plaintext ${glsl_SOURCES})
 
-add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${rcc_src} ${license_sources})
+add_executable(${PROJECT_NAME} ${cpp_SOURCES} ${hpp_SOURCES} ${moc_output} ${uic_output} ${opengl_shader} ${rc_src} ${rcc_src} ${license_sources})
 add_dependencies(${PROJECT_NAME} assimp)
 include_directories(${include_dirs_INTERNAL})
 
