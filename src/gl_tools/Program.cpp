@@ -44,6 +44,7 @@ namespace GL
 
   Program& Program::operator=(Program&& other) noexcept
   {
+    glDeleteProgram(name_);
     name_ = other.name_;
     other.name_ = 0;
     return *this;

@@ -25,7 +25,8 @@ namespace GL
 
   Texture& Texture::operator=(Texture&& other) noexcept
   {
-    this->name_ = other.name_;
+    glDeleteTextures(1, &name_);
+    name_ = other.name_;
     other.name_ = 0;
     return *this;
   }
