@@ -126,10 +126,7 @@ void GlWidget::resetAnimation()
 
 void GlWidget::setWireframeVisible(bool visible)
 {
-  if (visible)
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-  else
-    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+  renderer_->setWireframe(visible);
   repaint();
 }
 

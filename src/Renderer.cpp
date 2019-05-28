@@ -54,6 +54,9 @@ void Renderer::draw(const Model& model, const BoneTransform& transform, const Ca
   if (model.getBoneCount() == 0)
     return;
 
+  if (wireframe_)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
   shader_.use();
   shader_.setMat4("model", mat4());
   shader_.setMat4("proj_view", camera.getProjectionMatrix() * camera.getViewMatrix());
@@ -72,4 +75,12 @@ void Renderer::draw(const Model& model, const BoneTransform& transform, const Ca
   }
   GL::VertexArray::unbind();
   GL::checkError("Renderer::draw()");
+
+  if (wireframe_)
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void Renderer::setWireframe(bool draw_wireframe)
+{
+  wireframe_ = draw_wireframe;
 }
