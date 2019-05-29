@@ -35,6 +35,18 @@ bool ModelImporter::import(const std::filesystem::path& path, Model& model)
   return true;
 }
 
+const std::string& ModelImporter::getSupportedExtensions()
+{
+  static std::string extensions = []()
+  {
+    std::string tmp;
+    Assimp::Importer importer;
+    importer.GetExtensionList(tmp);
+    return tmp;
+  }();
+  return extensions;
+}
+
 const std::string& ModelImporter::getErrorMessage() const
 {
   return error_message_;

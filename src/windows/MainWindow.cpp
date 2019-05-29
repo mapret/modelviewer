@@ -1,5 +1,6 @@
 #include "Globals.hpp"
 #include "MainWindow.hpp"
+#include "ModelImporter.hpp"
 #include "ui/mainwindow.ui.h"
 #include "widgets/GlWidget.hpp"
 #include "windows/AboutDialog.hpp"
@@ -69,7 +70,10 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::openFileModal()
 {
-  auto path = QFileDialog::getOpenFileName(this, "Select a model file");
+  QString extensions = QString::fromStdString("All supported formats (" + ModelImporter::getSupportedExtensions() + ")");
+  extensions.replace(";", " ");
+  extensions += ";;All files (*)";
+  auto path = QFileDialog::getOpenFileName(this, "Select a model file", "", extensions);
   if (!path.isNull())
     emit gl_widget_->loadFile(path);
 }

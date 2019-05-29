@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Material.hpp"
 #include <filesystem>
 
 
@@ -14,6 +15,7 @@ class ModelImporter
 {
   public:
     bool import(const std::filesystem::path& path, Model& model);
+    static const std::string& getSupportedExtensions();
     const std::string& getErrorMessage() const;
 
   private:
