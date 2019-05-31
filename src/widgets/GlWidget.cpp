@@ -78,6 +78,7 @@ void GlWidget::resizeGL(int w, int h)
 
 void GlWidget::loadFile(QString path)
 {
+  makeCurrent(); //Crashes on Windows if called via File->Open (because the function is not called by the main thread?)
   Model new_model;
   ModelImporter importer;
   if (!importer.import(path.toStdString(), new_model))
