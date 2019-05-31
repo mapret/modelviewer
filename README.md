@@ -29,6 +29,14 @@ cmake -DCMAKE_BUILD_TYPE=MinSizeRel ..
 cmake --build .
 ```
 
+### Multiple Qt installations
+
+If multiple Qt installations exists or the Qt installation cannot be found via the systems PATH environment variable, the path to the installation has to be manually specified when calling CMake for the first time.
+When, for example, Visual Studio 2017 and Qt 5.12.1 should be used, the third line becomes:
+```
+cmake -G"Visual Studio 15 2017 Win64" -DQt5_DIR=C:\Qt\Qt5.12.1\5.12.1\msvc2017_64\lib\cmake\Qt5 ..
+```
+
 ## Running
 
 The application can be run by typing
