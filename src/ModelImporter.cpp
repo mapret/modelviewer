@@ -184,18 +184,17 @@ void ModelImporter::processAnimation(aiAnimation* ai_animation)
     for (unsigned j = 0; j < channel->mNumPositionKeys; j++)
     {
       const auto& key = channel->mPositionKeys[j];
-      keyframes.position_keyframes[static_cast<float>(key.mTime - 1) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
-      // -1 because animations always seem to start with timestamp 1
+      keyframes.position_keyframes[static_cast<float>(key.mTime) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
     }
     for (unsigned j = 0; j < channel->mNumScalingKeys; j++)
     {
       const auto& key = channel->mScalingKeys[j];
-      keyframes.scale_keyframes[static_cast<float>(key.mTime - 1) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
+      keyframes.scale_keyframes[static_cast<float>(key.mTime) * scale] = vec3(key.mValue.x, key.mValue.y, key.mValue.z);
     }
     for (unsigned j = 0; j < channel->mNumRotationKeys; j++)
     {
       const auto& key = channel->mRotationKeys[j];
-      keyframes.rotation_keyframes[static_cast<float>(key.mTime - 1) * scale] = quat(key.mValue.x, key.mValue.y, key.mValue.z, key.mValue.w);
+      keyframes.rotation_keyframes[static_cast<float>(key.mTime) * scale] = quat(key.mValue.x, key.mValue.y, key.mValue.z, key.mValue.w);
     }
     animation.keyframes[bone_index] = keyframes;
   }
