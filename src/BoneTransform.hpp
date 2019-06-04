@@ -11,6 +11,7 @@ class BoneTransform
     void setTransform(size_t index, const mat4& transform);
     void setCurrentAnimationIndex(size_t index);
     void setRunning(bool running);
+    void setAnimationTime(float time);
     void resetAnimation();
 
     const mat4& getTransform(size_t index) const;

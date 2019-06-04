@@ -61,6 +61,7 @@ void GlWidget::onUpdate()
   last_update_time_ = Clock::now();
   renderer_->update(model_, transform_, ts.count() * animation_speed_);
   repaint();
+  emit animationUpdated(transform_.getAnimationTime());
 }
 
 void GlWidget::paintGL()
@@ -100,6 +101,7 @@ void GlWidget::playAnimation(QString name)
   transform_.setCurrentAnimationIndex(index);
   renderer_->update(model_, transform_, 0);
   startAnimation();
+  emit animationChanged(name, model_.getAnimation(index).duration);
 }
 
 void GlWidget::startAnimation()
@@ -116,6 +118,13 @@ void GlWidget::toggleAnimation()
     update_timer_.stop();
   else
     startAnimation();
+}
+
+void GlWidget::setAnimationTime(float time)
+{
+  transform_.setAnimationTime(time);
+  renderer_->update(model_, transform_, 0);
+  repaint();
 }
 
 void GlWidget::resetAnimation()

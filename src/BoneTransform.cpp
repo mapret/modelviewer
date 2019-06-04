@@ -21,6 +21,11 @@ void BoneTransform::setRunning(bool running)
   running_ = running;
 }
 
+void BoneTransform::setAnimationTime(float time)
+{
+  animation_time_ = time;
+}
+
 void BoneTransform::resetAnimation()
 {
   animation_time_ = 0;

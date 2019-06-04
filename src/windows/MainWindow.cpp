@@ -39,12 +39,15 @@ MainWindow::MainWindow(QWidget *parent)
 
   QObject::connect(gl_widget_, &GlWidget::fileLoaded, this, &MainWindow::fileLoaded);
   QObject::connect(gl_widget_, &GlWidget::fileLoadError, this, &MainWindow::fileLoadError, Qt::QueuedConnection);
+  QObject::connect(gl_widget_, &GlWidget::animationChanged, this, &MainWindow::animationChanged);
+  QObject::connect(gl_widget_, &GlWidget::animationUpdated, this, &MainWindow::animationUpdated);
   QObject::connect(ui_->chk_wireframe, &QCheckBox::toggled, this, &MainWindow::setWireframeVisible);
   QObject::connect(ui_->btn_reset_camera, &QPushButton::pressed, this, &MainWindow::resetCamera);
   QObject::connect(ui_->btn_reset_zoom, &QPushButton::pressed, this, &MainWindow::resetCameraZoom);
   QObject::connect(ui_->lst_animations, &QListWidget::itemDoubleClicked, this, &MainWindow::startAnimation);
   QObject::connect(ui_->btn_toggle_play, &QPushButton::pressed, this, &MainWindow::toggleAnimation);
   QObject::connect(ui_->btn_reset, &QPushButton::pressed, this, &MainWindow::resetAnimation);
+  QObject::connect(ui_->sld_current_time, &QSlider::valueChanged, this, &MainWindow::setAnimationTime);
   QObject::connect(ui_->spn_animation_speed, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &MainWindow::setAnimationSpeed);
   QObject::connect(ui_->act_open, &QAction::triggered, this, &MainWindow::openFileModal);
   QObject::connect(ui_->act_exit, &QAction::triggered, this, &MainWindow::exitAction);
@@ -121,6 +124,18 @@ void MainWindow::startAnimation(QListWidgetItem* item)
   emit gl_widget_->playAnimation(animation_name);
 }
 
+void MainWindow::animationChanged(QString name, float duration)
+{
+  ui_->sld_current_time->setMaximum(duration * 30.f);
+}
+
+void MainWindow::animationUpdated(float timestamp)
+{
+  ui_->sld_current_time->blockSignals(true);
+  ui_->sld_current_time->setValue(timestamp * 30.f);
+  ui_->sld_current_time->blockSignals(false);
+}
+
 void MainWindow::toggleAnimation()
 {
   emit gl_widget_->toggleAnimation();
@@ -129,6 +144,11 @@ void MainWindow::toggleAnimation()
 void MainWindow::resetAnimation()
 {
   emit gl_widget_->resetAnimation();
+}
+
+void MainWindow::setAnimationTime(int value)
+{
+  emit gl_widget_->setAnimationTime(value / 30.f);
 }
 
 void MainWindow::setAnimationSpeed(double value)

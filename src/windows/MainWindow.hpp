@@ -34,8 +34,11 @@ class MainWindow : public QMainWindow
     void resetCamera();
     void resetCameraZoom();
     void startAnimation(QListWidgetItem* item);
+    void animationChanged(QString name, float duration);
+    void animationUpdated(float timestamp);
     void toggleAnimation();
     void resetAnimation();
+    void setAnimationTime(int value);
     void setAnimationSpeed(double value);
     void showControls();
     void showLicenses();

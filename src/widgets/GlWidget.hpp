@@ -49,6 +49,7 @@ class GlWidget : public QOpenGLWidget
     void playAnimation(QString name);
     void startAnimation();
     void toggleAnimation();
+    void setAnimationTime(float time);
     void resetAnimation();
     void setWireframeVisible(bool visible);
     void setAnimationSpeed(float animation_speed);
@@ -59,4 +60,6 @@ class GlWidget : public QOpenGLWidget
   signals:
     void fileLoaded(QString path);
     void fileLoadError(QString path, QString message);
+    void animationChanged(QString name, float duration);
+    void animationUpdated(float timestamp);
 };
