@@ -5,12 +5,18 @@
 
 namespace
 {
-  const char* LICENSES[] =
+  struct LicenseEntry
   {
-    "Glew",              (char*)binary::Glew,
-    "Assimp",            (char*)binary::Assimp,
-    "QDarkStyleSheet",   (char*)binary::QDarkStyleSheet,
-    "BreezeStyleSheets", (char*)binary::Breeze,
+      const char* name;
+      const char* text;
+      size_t text_length;
+  }
+  LICENSES[] =
+  {
+      {"Glew",              (char*)binary::Glew,            binary::Glew_size},
+      {"Assimp",            (char*)binary::Assimp,          binary::Assimp_size},
+      {"QDarkStyleSheet",   (char*)binary::QDarkStyleSheet, binary::QDarkStyleSheet_size},
+      {"BreezeStyleSheets", (char*)binary::Breeze,          binary::Breeze_size}
   };
 }
 
@@ -21,14 +27,12 @@ LicenseDialog::LicenseDialog(QWidget* parent)
   ui_->setupUi(this);
 
   std::string s;
-  for (size_t i = 0; i < std::size(LICENSES); i += 2)
-  {
-    ui_->lst_names->addItem(QString::fromUtf8(LICENSES[i]));
-  }
+  for (const auto& license_entry : LICENSES)
+    ui_->lst_names->addItem(QString::fromUtf8(license_entry.name));
 
   QObject::connect(ui_->lst_names, &QListWidget::currentRowChanged, this, &LicenseDialog::itemSelected);
   ui_->txt_text->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-  ui_->txt_text->setMinimumWidth(ui_->txt_text->fontMetrics().width(' ') * 81 + QApplication::style()->pixelMetric(QStyle::PM_ScrollBarExtent));
+  ui_->txt_text->setMinimumWidth(ui_->txt_text->fontMetrics().horizontalAdvance(' ') * 81 + QApplication::style()->pixelMetric(QStyle::PM_ScrollBarExtent));
 }
 
 LicenseDialog::~LicenseDialog()
@@ -37,5 +41,5 @@ LicenseDialog::~LicenseDialog()
 
 void LicenseDialog::itemSelected(int index)
 {
-  ui_->txt_text->setPlainText(QString::fromUtf8(LICENSES[index * 2 + 1]));
+  ui_->txt_text->setPlainText(QString::fromUtf8(LICENSES[index].text, LICENSES[index].text_length));
 }
