@@ -55,10 +55,10 @@ include_directories(${CMAKE_BINARY_DIR}/assimp-prefix/src/assimp-build/include)
 ExternalProject_Add(
     qdarkstyle
     DOWNLOAD_DIR ${EXTERNAL_DIR}/download
-    DOWNLOAD_NAME QDarkStyleSheet-2.6.5.zip
+    DOWNLOAD_NAME QDarkStyleSheet-2.7.zip
     SOURCE_DIR ${EXTERNAL_DIR}/qdarkstyle
-    URL https://github.com/ColinDuquesnoy/QDarkStyleSheet/archive/2.6.5.zip
-    URL_HASH SHA256=795414d972a6cc3291a1b5faf34550a1bb11c5fe368fe5a2ade81c90ae043364
+    URL https://github.com/ColinDuquesnoy/QDarkStyleSheet/archive/2.7.zip
+    URL_HASH SHA256=21e9724623d8bbccf7959767040c71ff0a6365ed3d05934bee64180f9ea8d83f
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
