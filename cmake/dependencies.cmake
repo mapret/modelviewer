@@ -6,7 +6,7 @@ if (patch_assimp)
   # Force build minizip sources
   string(REPLACE "use_pkgconfig(UNZIP minizip)" "" data "${data}")
   # Reduces library size by a factor of 12
-  string(REPLACE "\${CMAKE_CXX_FLAGS} -g" "\${CMAKE_CXX_FLAGS}" data "${data}") #
+  string(REPLACE "CMAKE_CXX_FLAGS \"-g " "CMAKE_CXX_FLAGS \"" data "${data}") #
   file(WRITE ${filename} "${data}")
   return()
 endif ()
@@ -31,12 +31,12 @@ endif()
 ExternalProject_Add(
     assimp
     DOWNLOAD_DIR ${EXTERNAL_DIR}/download
-    DOWNLOAD_NAME assimp-4.1.0.zip
+    DOWNLOAD_NAME assimp-5.0.0.zip
     SOURCE_DIR ${EXTERNAL_DIR}/assimp
-    URL https://github.com/assimp/assimp/archive/v4.1.0.zip
-    URL_HASH SHA256=407BE74F44F488FCF1AAC3492D962452DDDE89561906E917A208C75E1192BCDC
+    URL https://github.com/assimp/assimp/archive/v5.0.0.zip
+    URL_HASH SHA256=0c81f2d6c2b18272c98727e21846a9a8a203b15e8957c2ff7a6e76a1c52af2d3
     PATCH_COMMAND ${CMAKE_COMMAND} -Dpatch_assimp=1 -DEXTERNAL_DIR=${EXTERNAL_DIR} -P ${CMAKE_CURRENT_LIST_FILE}
-    CMAKE_ARGS ${assimp_static} -DASSIMP_BUILD_IFC_IMPORTER=0 -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
+    CMAKE_ARGS ${assimp_static} -DASSIMP_BUILD_IFC_IMPORTER=0 -DASSIMP_NO_EXPORT=1 -DASSIMP_BUILD_ASSIMP_TOOLS=0 -DASSIMP_BUILD_TESTS=0 -DASSIMP_BUILD_ZLIB=1 -DCMAKE_BUILD_TYPE=Release
     INSTALL_COMMAND ""
 )
 set(assimp_name assimp)
