@@ -12,3 +12,4 @@ build:
   artifacts:
     paths:
      - build/modelviewer
+    expire_in: 1 week

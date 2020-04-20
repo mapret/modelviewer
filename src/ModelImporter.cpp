@@ -13,6 +13,15 @@
 #include <assimp/scene.h>
 
 
+namespace
+{
+  GL::Texture getWhitePixelTexture()
+  {
+    static constexpr uint8_t image_data[3]{0xff, 0xff, 0xff}; //rgb(255, 255, 255)
+    return GL::uploadTextureToGPU(image_data, 1, 1, 3);
+  }
+}
+
 bool ModelImporter::import(const std::filesystem::path& path, Model& model)
 {
   model_ = &model;
@@ -142,6 +151,7 @@ void ModelImporter::processMesh(aiMesh* ai_mesh, size_t bone_index)
 Material ModelImporter::loadMaterial(aiMaterial* mat)
 {
   Material material;
+  bool texture_found = false;
   for (const auto& texture_type : { //TODO: Also support specular/normal textures
       aiTextureType_DIFFUSE
   })
@@ -155,8 +165,11 @@ Material ModelImporter::loadMaterial(aiMaterial* mat)
       std::filesystem::path path_to_file = directory_ / relative_texture_path.C_Str();
       vec2u size;
       material.texture = GL::loadImage(path_to_file, size);
+      texture_found = true;
     }
   }
+  if (!texture_found)
+    material.texture = getWhitePixelTexture();
 
   aiColor3D c;
   if (mat->Get("$clr.diffuse", 0, 0, c) == aiReturn_SUCCESS)
